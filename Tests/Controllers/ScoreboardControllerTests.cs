@@ -11,7 +11,6 @@ namespace Tests.Controllers
     public void MethodName_GivenCondition_ShouldExpected()
     {
       // Arrange.
-      var testObject = new ScoreboardController();
 
       // Act.
 
