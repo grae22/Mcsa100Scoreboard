@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Mcsa100Scoreboard.Domain
 {
@@ -8,7 +9,14 @@ namespace Mcsa100Scoreboard.Domain
       in string name,
       in IEnumerable<string> routes)
     {
-      return new Climber(name, routes);
+      try
+      {
+        return new Climber(name, routes);
+      }
+      catch (ArgumentException)
+      {
+        return null;
+      }
     }
 
     public string Name { get; }
@@ -18,8 +26,20 @@ namespace Mcsa100Scoreboard.Domain
       in string name,
       in IEnumerable<string> routes)
     {
+      ValidateName(name);
+
       Name = name;
       Routes = new List<string>(routes);
+    }
+
+    private static void ValidateName(in string name)
+    {
+      if (!string.IsNullOrWhiteSpace(name))
+      {
+        return;
+      }
+
+      throw new ArgumentException("Name cannot be null or empty.", nameof(name));
     }
   }
 }

@@ -30,5 +30,24 @@ namespace Tests.Domain
       Assert.AreEqual(routes[0], climber.Routes.First());
       Assert.AreEqual(routes[1], climber.Routes.Last());
     }
+
+    [Test]
+    public void Create_GivenNoName_ShouldReturnNull()
+    {
+      // Arrange.
+      const string name = null;
+
+      string[] routes =
+      {
+        "Route1",
+        "Route2"
+      };
+
+      // Act.
+      Climber climber = Climber.Create(name, routes);
+
+      // Assert.
+      Assert.Null(climber);
+    }
   }
 }
