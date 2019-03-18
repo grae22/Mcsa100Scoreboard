@@ -15,7 +15,7 @@ namespace Tests.Models
     public void GivenInputJson_ShouldDerserialiseSuccessfully()
     {
       // Arrange.
-      string rawData = File.ReadAllText(@"Controllers\ScoreboardController_TestData.json");
+      string rawData = File.ReadAllText(@"TestData\ScoreboardController_TestData.json");
       
       // Act.
       var model = JsonConvert.DeserializeObject<InputModel>(rawData);

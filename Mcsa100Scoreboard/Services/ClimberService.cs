@@ -1,6 +1,6 @@
 ﻿namespace Mcsa100Scoreboard.Services
 {
-  internal class ClimbersService
+  internal class ClimberService
   {
   }
 }
