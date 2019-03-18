@@ -49,5 +49,25 @@ namespace Tests.Domain
       // Assert.
       Assert.Null(climber);
     }
+
+    [Test]
+    public void RouteCount_GivenClimberWith3Routes_ShouldReturnReturn3()
+    {
+      // Arrange.
+      const string name = "Name123";
+
+      string[] routes =
+      {
+        "Route1",
+        "Route2",
+        "Route3"
+      };
+
+      // Act.
+      Climber climber = Climber.Create(name, routes);
+
+      // Assert.
+      Assert.AreEqual(routes.Length, climber.RouteCount);
+    }
   }
 }

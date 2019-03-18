@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mcsa100Scoreboard.Domain
 {
@@ -21,6 +22,7 @@ namespace Mcsa100Scoreboard.Domain
 
     public string Name { get; }
     public IEnumerable<string> Routes { get; }
+    public int RouteCount => Routes.Count();
 
     private Climber(
       in string name,
