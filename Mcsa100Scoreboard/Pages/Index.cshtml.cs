@@ -11,21 +11,23 @@ namespace Mcsa100Scoreboard.Pages
 {
   public class IndexModel : PageModel
   {
-    // TODO: Remove.
-    private const string ApiKey = "AIzaSyAYhi3At01IDR5rbEIM8XSXruvgk-5NDMU";
-
     public Scoreboard Scoreboard { get; private set; }
 
     private readonly IGoogleSheetService _googleSheetService;
+    private readonly string _googleSheetId;
+    private readonly string _googleApiKey;
 
     public IndexModel(IGoogleSheetService googleSheetService)
     {
       _googleSheetService = googleSheetService ?? throw new ArgumentNullException(nameof(googleSheetService));
+
+      _googleSheetId = Environment.GetEnvironmentVariable("GoogleSheetId") ?? throw new Exception("Sheet Id not found.");
+      _googleApiKey = Environment.GetEnvironmentVariable("GoogleApiKey") ?? throw new Exception("Api Key not found.");
     }
 
     public async Task OnGet()
     {
-      var address = new Uri($"https://sheets.googleapis.com/v4/spreadsheets/1qYBulO5nLpFs574h49En8POnvQjXcdVB6VpU1gMBIQQ/values/Sheet1!A1:Z500?key={ApiKey}");
+      var address = new Uri($"https://sheets.googleapis.com/v4/spreadsheets/{_googleSheetId}/values/Sheet1!A1:Z500?key={_googleApiKey}");
       var input = await _googleSheetService.RetrieveInput<InputModel>(address);
 
       Scoreboard = new Scoreboard(input);
