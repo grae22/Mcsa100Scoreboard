@@ -2,12 +2,19 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <LangVersion>7.2</LangVersion>
+    <UserSecretsId>049566f8-e4b0-4f63-99ff-515d3a58235a</UserSecretsId>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\original.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\images\original.jpg" />
   </ItemGroup>
 </Project>
