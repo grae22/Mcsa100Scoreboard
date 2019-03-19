@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Mcsa100Scoreboard.Models;
 
@@ -8,15 +7,9 @@ namespace Mcsa100Scoreboard.Domain
 {
   public class Scoreboard
   {
-    public IEnumerable<Climber> RankedClimbers
-    {
-      get
-      {
-        return _climbers.OrderByDescending(c => c.RouteCount);
-      }
-    }
+    public IReadOnlyDictionary<Climber, int> RankingByClimber => _ranker.RankingByClimber;
 
-    private readonly List<Climber> _climbers = new List<Climber>();
+    private ClimberRanker _ranker;
 
     public Scoreboard(in InputModel input)
     {
@@ -74,6 +67,8 @@ namespace Mcsa100Scoreboard.Domain
         }
       }
 
+      var climbers = new List<Climber>();
+
       foreach (int key in climberNameByClimberIndex.Keys)
       {
         Climber climber = Climber.Create(
@@ -85,8 +80,10 @@ namespace Mcsa100Scoreboard.Domain
           continue;
         }
 
-        _climbers.Add(climber);
+        climbers.Add(climber);
       }
+
+      _ranker = new ClimberRanker(climbers);
     }
   }
 }
