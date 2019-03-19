@@ -43,3 +43,12 @@ body {
     width: 50% !important;
     margin: auto;
 }
+
+.page-heading {
+  font-family: serif;
+  font-weight: bolder;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+}
