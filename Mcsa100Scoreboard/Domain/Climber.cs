@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Mcsa100Scoreboard.Domain
 {
-  internal class Climber
+  public class Climber
   {
     public static Climber Create(
       in string name,

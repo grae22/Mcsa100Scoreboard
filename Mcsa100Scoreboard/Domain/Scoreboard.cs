@@ -6,7 +6,7 @@ using Mcsa100Scoreboard.Models;
 
 namespace Mcsa100Scoreboard.Domain
 {
-  internal class Scoreboard
+  public class Scoreboard
   {
     public IEnumerable<Climber> RankedClimbers
     {
@@ -64,7 +64,8 @@ namespace Mcsa100Scoreboard.Domain
 
           string routeName = input.Values[row][column];
 
-          if (string.IsNullOrWhiteSpace(routeName))
+          if (string.IsNullOrWhiteSpace(routeName) ||
+              routeName.StartsWith("#"))
           {
             continue;
           }

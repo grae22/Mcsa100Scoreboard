@@ -14,6 +14,8 @@ namespace Mcsa100Scoreboard.Pages
     // TODO: Remove.
     private const string ApiKey = "AIzaSyAYhi3At01IDR5rbEIM8XSXruvgk-5NDMU";
 
+    public Scoreboard Scoreboard { get; private set; }
+
     private readonly IGoogleSheetService _googleSheetService;
 
     public IndexModel(IGoogleSheetService googleSheetService)
@@ -25,7 +27,8 @@ namespace Mcsa100Scoreboard.Pages
     {
       var address = new Uri($"https://sheets.googleapis.com/v4/spreadsheets/1qYBulO5nLpFs574h49En8POnvQjXcdVB6VpU1gMBIQQ/values/Sheet1!A1:Z500?key={ApiKey}");
       var input = await _googleSheetService.RetrieveInput<InputModel>(address);
-      var scoreboard = new Scoreboard(input);
+
+      Scoreboard = new Scoreboard(input);
     }
   }
 }
