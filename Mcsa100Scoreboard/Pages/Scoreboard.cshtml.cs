@@ -10,6 +10,9 @@ namespace Mcsa100Scoreboard.Pages
 {
   public class ScoreboardModel : PageModel
   {
+    // TODO: Remove.
+    private const string ApiKey = "AIzaSyAYhi3At01IDR5rbEIM8XSXruvgk-5NDMU";
+
     private readonly IGoogleSheetService _googleSheetService;
 
     public ScoreboardModel(IGoogleSheetService googleSheetService)
@@ -19,7 +22,7 @@ namespace Mcsa100Scoreboard.Pages
 
     public async Task OnGet()
     {
-      var address = new Uri("https://sheets.googleapis.com/v4/spreadsheets/1qYBulO5nLpFs574h49En8POnvQjXcdVB6VpU1gMBIQQ?ranges=A1:Z500?key=AIzaSyAYhi3At01IDR5rbEIM8XSXruvgk-5NDMU");
+      var address = new Uri($"https://sheets.googleapis.com/v4/spreadsheets/1qYBulO5nLpFs574h49En8POnvQjXcdVB6VpU1gMBIQQ/values/Sheet1!A1:Z500?key={ApiKey}");
       var input = await _googleSheetService.RetrieveInput<InputModel>(address);
       var scoreboard = new Scoreboard(input);
     }

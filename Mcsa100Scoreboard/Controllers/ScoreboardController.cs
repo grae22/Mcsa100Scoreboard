@@ -11,6 +11,9 @@ namespace Mcsa100Scoreboard.Controllers
 {
   internal class ScoreboardController : Controller
   {
+    // TODO: Remove.
+    private const string ApiKey = "AIzaSyAYhi3At01IDR5rbEIM8XSXruvgk-5NDMU";
+
     private readonly IGoogleSheetService _googleSheetService;
 
     public ScoreboardController(IGoogleSheetService googleSheetService)
@@ -20,7 +23,7 @@ namespace Mcsa100Scoreboard.Controllers
 
     public async Task<IActionResult> Index()
     {
-      var address = new Uri("https://sheets.googleapis.com/v4/spreadsheets/1qYBulO5nLpFs574h49En8POnvQjXcdVB6VpU1gMBIQQ?ranges=A1:z500?key=AIzaSyAYhi3At01IDR5rbEIM8XSXruvgk-5NDMU");
+      var address = new Uri($"https://sheets.googleapis.com/v4/spreadsheets/1qYBulO5nLpFs574h49En8POnvQjXcdVB6VpU1gMBIQQ?ranges=A1:z500?key={ApiKey}");
       var input = await _googleSheetService.RetrieveInput<InputModel>(address);
       var scoreboard = new Scoreboard(input);
 
