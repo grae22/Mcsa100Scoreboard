@@ -8,7 +8,7 @@ namespace Mcsa100Scoreboard.Domain
   {
     public IReadOnlyDictionary<Climber, int> RankingByClimber => _rankedClimbers;
 
-    private Dictionary<Climber, int> _rankedClimbers = new Dictionary<Climber, int>();
+    private readonly Dictionary<Climber, int> _rankedClimbers = new Dictionary<Climber, int>();
 
     public ClimberRanker(in IEnumerable<Climber> climbers)
     {

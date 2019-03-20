@@ -18,10 +18,10 @@ namespace Mcsa100Scoreboard.Domain
         throw new ArgumentNullException(nameof(input));
       }
 
-      CreateClimbersFromInput(input);
+      CreateClimberRankingFromInput(input);
     }
 
-    private void CreateClimbersFromInput(in InputModel input)
+    private void CreateClimberRankingFromInput(in InputModel input)
     {
       if (input.Values == null)
       {
