@@ -15,10 +15,10 @@ namespace Tests.Domain
       // Arrange.
       const string name = "Name123";
 
-      string[] routes =
+      Route[] routes =
       {
-        "Route1",
-        "Route2"
+        Route.Create("Route1"),
+        Route.Create("Route2")
       };
 
       // Act.
@@ -37,10 +37,10 @@ namespace Tests.Domain
       // Arrange.
       const string name = null;
 
-      string[] routes =
+      Route[] routes =
       {
-        "Route1",
-        "Route2"
+        Route.Create("Route1"),
+        Route.Create("Route2")
       };
 
       // Act.
@@ -56,11 +56,11 @@ namespace Tests.Domain
       // Arrange.
       const string name = "Name123";
 
-      string[] routes =
+      Route[] routes =
       {
-        "Route1",
-        "Route2",
-        "Route3"
+        Route.Create("Route1"),
+        Route.Create("Route2"),
+        Route.Create("Route3")
       };
 
       // Act.

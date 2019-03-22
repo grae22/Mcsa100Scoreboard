@@ -13,9 +13,13 @@ namespace Tests.Domain
     public void RankingByClimber_GivenClimbers_ShouldRankByRouteCount()
     {
       // Arrange.
-      var climberWith1Route = Climber.Create("Name1", new string[] { "Route1" });
-      var climberWith2Routes = Climber.Create("Name2", new string[] { "Route1", "Route2" });
-      var climberWith3Routes = Climber.Create("Name3", new string[] { "Route1", "Route2", "Route3" });
+      var route1 = Route.Create("Route1");
+      var route2 = Route.Create("Route1");
+      var route3 = Route.Create("Route1");
+
+      var climberWith1Route = Climber.Create("Name1", new [] { route1 });
+      var climberWith2Routes = Climber.Create("Name2", new [] { route1, route2 });
+      var climberWith3Routes = Climber.Create("Name3", new [] { route1, route2, route3 });
 
       var climbers = new List<Climber>
       {
@@ -40,9 +44,13 @@ namespace Tests.Domain
     public void RankingByClimber_GivenClimbersWithSameRouteCount_ShouldRankByRouteCount()
     {
       // Arrange.
-      var climberWith1Route = Climber.Create("Name1", new string[] { "Route1" });
-      var climberWith2Routes1 = Climber.Create("Name2", new string[] { "Route1", "Route2" });
-      var climberWith2Routes2 = Climber.Create("Name3", new string[] { "Route1", "Route2" });
+      var route1 = Route.Create("Route1");
+      var route2 = Route.Create("Route1");
+      var route3 = Route.Create("Route1");
+
+      var climberWith1Route = Climber.Create("Name1", new [] { route1 });
+      var climberWith2Routes1 = Climber.Create("Name2", new [] { route1, route2 });
+      var climberWith2Routes2 = Climber.Create("Name3", new [] { route1, route2 });
 
       var climbers = new List<Climber>
       {

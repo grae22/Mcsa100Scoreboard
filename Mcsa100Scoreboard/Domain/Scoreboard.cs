@@ -71,9 +71,23 @@ namespace Mcsa100Scoreboard.Domain
 
       foreach (int key in climberNameByClimberIndex.Keys)
       {
+        var routes = new List<Route>();
+
+        foreach (string routeText in routesByClimberIndex[key])
+        {
+          Route route = Route.Create(routeText);
+
+          if (route == null)
+          {
+            continue;
+          }
+
+          routes.Add(route);
+        }
+
         Climber climber = Climber.Create(
           climberNameByClimberIndex[key],
-          routesByClimberIndex[key]);
+          routes);
 
         if (climber == null)
         {
