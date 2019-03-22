@@ -29,10 +29,10 @@ namespace Tests.Domain
       var testObject = new Scoreboard(model);
 
       // Assert.
-      Assert.AreEqual("Climber3", testObject.RankingByClimber.First().Key.Name);
-      Assert.AreEqual("Climber1", testObject.RankingByClimber.Last().Key.Name);
-      Assert.AreEqual(3, testObject.RankingByClimber.First().Key.RouteCount);
-      Assert.AreEqual(1, testObject.RankingByClimber.Last().Key.RouteCount);
+      Assert.AreEqual("Climber3", testObject.AnalysedClimbers.First().Climber.Name);
+      Assert.AreEqual("Climber1", testObject.AnalysedClimbers.Last().Climber.Name);
+      Assert.AreEqual(3, testObject.AnalysedClimbers.First().Climber.RouteCount);
+      Assert.AreEqual(1, testObject.AnalysedClimbers.Last().Climber.RouteCount);
     }
   }
 }

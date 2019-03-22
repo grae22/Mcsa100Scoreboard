@@ -21,7 +21,7 @@
 <!-- Header banner -->
 <div class="panel panel-default" style="background-color: rgba(255, 255, 255, 0.7);">
   <h1 align="center" class="page-heading">MCSA-KZN 100 Climbs</h1>
-  <h4 align="center">~ @Model.Scoreboard.RankingByClimber.Keys.Sum(c => c.RouteCount) climbs logged ~</h4>
+  <h4 align="center">~ @Model.Scoreboard.AnalysedClimbers.Sum(c => c.Climber.RouteCount) climbs logged ~</h4>
 </div>
 
 <!-- Ranking table -->
@@ -34,24 +34,33 @@
         <th>Climber</th>
         <th># Climbs</th>
         <th>Diff.</th>
+        <th style="font-size: x-small; text-align: center;">Avg.<br />Grade</th>
+        <th style="font-size: x-small; text-align: center;">Highest<br />Grade</th>
+        <th style="font-size: x-small; text-align: center;">Lowest<br />Grade</th>
       </tr>
       </thead>
       @{
-        int bestRouteCount = Model.Scoreboard.RankingByClimber.OrderBy(x => x.Value).First().Key.RouteCount;
-
-        foreach (var entry in @Model.Scoreboard.RankingByClimber.OrderBy(x => x.Value))
+        if (Model.Scoreboard.AnalysedClimbers.Any())
         {
-          int rank = entry.Value;
-          string name = entry.Key.Name;
-          int routeCount = entry.Key.RouteCount;
-          string toWin = (rank > 1 ? $"{bestRouteCount - routeCount}" : "-");
+          int bestRouteCount = Model.Scoreboard.AnalysedClimbers[0].Climber.RouteCount;
 
-          <tr>
-            <td style="text-align: center;">@rank</td>
-            <td style="text-align: left;"><a href="#@name.Replace(" ", "")">@name</a></td>
-            <td style="text-align: center;">@routeCount</td>
-            <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #a0a0a0;">-@toWin</td>
-          </tr>
+          foreach (var climber in @Model.Scoreboard.AnalysedClimbers)
+          {
+            int rank = climber.Rank;
+            string name = climber.Climber.Name;
+            int routeCount = climber.Climber.RouteCount;
+            string toWin = (rank > 1 ? $"{bestRouteCount - routeCount}" : "-");
+
+            <tr>
+              <td style="text-align: center;">@rank</td>
+              <td style="text-align: left;"><a href="#@name.Replace(" ", "")">@name</a></td>
+              <td style="text-align: center;">@routeCount</td>
+              <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #a0a0a0;">-@toWin</td>
+              <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #a0a0c0;">@climber.AverageGradeClimbed</td>
+              <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #a0a0c0;">@climber.HighestGradeClimbed</td>
+              <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #a0a0c0;">@climber.LowestGradeClimbed</td>
+            </tr>
+          }
         }
       }
     </table>
@@ -60,17 +69,17 @@
 
 <!-- Climbers' routes -->
 @{
-  foreach (var entry in @Model.Scoreboard.RankingByClimber)
+  foreach (var climber in @Model.Scoreboard.AnalysedClimbers)
   {
     <p>
       <div>
-        <a name="@entry.Key.Name.Replace(" ", "")"></a>
+        <a name="@climber.Climber.Name.Replace(" ", "")"></a>
         <table class="table table-routes" style="background-color: white;">
-          <thead><tr><th>#@entry.Value : @entry.Key.Name</th></tr></thead>
+          <thead><tr><th>#@climber.Rank : @climber.Climber.Name</th></tr></thead>
           @{
             int routeNumber = 1;
 
-            foreach (var route in entry.Key.Routes)
+            foreach (var route in climber.Climber.Routes)
             {
               string grade = route.HasGrade ? $"({route.Grade})" : string.Empty;
 

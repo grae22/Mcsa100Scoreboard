@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Mcsa100Scoreboard.Models;
 
@@ -7,9 +8,7 @@ namespace Mcsa100Scoreboard.Domain
 {
   public class Scoreboard
   {
-    public IReadOnlyDictionary<Climber, int> RankingByClimber => _ranker.RankingByClimber;
-
-    private ClimberRanker _ranker;
+    public ClimberAnalysis[] AnalysedClimbers { get; }
 
     public Scoreboard(in InputModel input)
     {
@@ -18,10 +17,21 @@ namespace Mcsa100Scoreboard.Domain
         throw new ArgumentNullException(nameof(input));
       }
 
-      CreateClimberRankingFromInput(input);
+      var ranker = CreateClimberRankingFromInput(input);
+      var analysedClimbers = new List<ClimberAnalysis>();
+
+      foreach (var pair in ranker.RankingByClimber.OrderBy(p => p.Value))
+      {
+        Climber climber = pair.Key;
+        int rank = pair.Value;
+        var analysis = new ClimberAnalysis(climber, rank);
+        analysedClimbers.Add(analysis);
+      }
+
+      AnalysedClimbers = analysedClimbers.ToArray();
     }
 
-    private void CreateClimberRankingFromInput(in InputModel input)
+    private ClimberRanker CreateClimberRankingFromInput(in InputModel input)
     {
       if (input.Values == null)
       {
@@ -30,7 +40,7 @@ namespace Mcsa100Scoreboard.Domain
 
       if (input.Values.Length == 0)
       {
-        return;
+        return new ClimberRanker(new List<Climber>());
       }
 
       var climberNameByClimberIndex = new Dictionary<int, string>();
@@ -97,7 +107,7 @@ namespace Mcsa100Scoreboard.Domain
         climbers.Add(climber);
       }
 
-      _ranker = new ClimberRanker(climbers);
+      return new ClimberRanker(climbers);
     }
   }
 }

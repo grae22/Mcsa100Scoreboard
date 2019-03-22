@@ -26,7 +26,7 @@ namespace Tests.Domain
           Route.Create("RouteX")
         });
 
-      var testObject = new ClimberAnalysis(climber);
+      var testObject = new ClimberAnalysis(climber, 1);
 
       // Act.
       int? result = testObject.HighestGradeClimbed;
@@ -37,6 +37,29 @@ namespace Tests.Domain
     }
 
     [Test]
+    public void HighestGradeClimbed_GivenClimberWithNoGradedClimbs_ShouldReturnGradeOfHighestClimbAsNull()
+    {
+      // Arrange.
+      var climber = Substitute.For<IClimber>();
+
+      climber.Routes.Returns(
+        new[]
+        {
+          Route.Create("Route1"),
+          Route.Create("Route2"),
+          Route.Create("Route3")
+        });
+
+      var testObject = new ClimberAnalysis(climber, 1);
+
+      // Act.
+      int? result = testObject.HighestGradeClimbed;
+
+      // Assert.
+      Assert.False(result.HasValue);
+    }
+
+    [Test]
     public void HighestGradeClimbed_GivenClimberWithNoClimbs_ShouldReturnGradeOfHighestClimbAsNull()
     {
       // Arrange.
@@ -44,7 +67,7 @@ namespace Tests.Domain
 
       climber.Routes.Returns(new List<Route>());
 
-      var testObject = new ClimberAnalysis(climber);
+      var testObject = new ClimberAnalysis(climber, 1);
 
       // Act.
       int? result = testObject.HighestGradeClimbed;
@@ -69,7 +92,7 @@ namespace Tests.Domain
           Route.Create("RouteX")
         });
 
-      var testObject = new ClimberAnalysis(climber);
+      var testObject = new ClimberAnalysis(climber, 1);
 
       // Act.
       int? result = testObject.LowestGradeClimbed;
@@ -80,6 +103,29 @@ namespace Tests.Domain
     }
 
     [Test]
+    public void LowestGradeClimbed_GivenClimberWithNoGradedClimbs_ShouldReturnGradeOfHighestClimbAsNull()
+    {
+      // Arrange.
+      var climber = Substitute.For<IClimber>();
+
+      climber.Routes.Returns(
+        new[]
+        {
+          Route.Create("Route1"),
+          Route.Create("Route2"),
+          Route.Create("Route3")
+        });
+
+      var testObject = new ClimberAnalysis(climber, 1);
+
+      // Act.
+      int? result = testObject.LowestGradeClimbed;
+
+      // Assert.
+      Assert.False(result.HasValue);
+    }
+
+    [Test]
     public void LowestGradeClimbed_GivenClimberWithNoClimbs_ShouldReturnGradeOfLowestClimbAsNull()
     {
       // Arrange.
@@ -87,7 +133,7 @@ namespace Tests.Domain
 
       climber.Routes.Returns(new List<Route>());
 
-      var testObject = new ClimberAnalysis(climber);
+      var testObject = new ClimberAnalysis(climber, 1);
 
       // Act.
       int? result = testObject.LowestGradeClimbed;
@@ -111,7 +157,7 @@ namespace Tests.Domain
           Route.Create("RouteX")
         });
 
-      var testObject = new ClimberAnalysis(climber);
+      var testObject = new ClimberAnalysis(climber, 1);
 
       // Act.
       int? result = testObject.AverageGradeClimbed;
@@ -122,6 +168,29 @@ namespace Tests.Domain
     }
 
     [Test]
+    public void AverageGradeClimbed_GivenClimberWithNoGradedClimbs_ShouldReturnGradeOfHighestClimbAsNull()
+    {
+      // Arrange.
+      var climber = Substitute.For<IClimber>();
+
+      climber.Routes.Returns(
+        new[]
+        {
+          Route.Create("Route1"),
+          Route.Create("Route2"),
+          Route.Create("Route3")
+        });
+
+      var testObject = new ClimberAnalysis(climber, 1);
+
+      // Act.
+      int? result = testObject.AverageGradeClimbed;
+
+      // Assert.
+      Assert.False(result.HasValue);
+    }
+
+    [Test]
     public void AverageGradeClimbed_GivenClimberWithNoClimbs_ShouldReturnGradeOfAverageClimbAsNull()
     {
       // Arrange.
@@ -129,7 +198,7 @@ namespace Tests.Domain
 
       climber.Routes.Returns(new List<Route>());
 
-      var testObject = new ClimberAnalysis(climber);
+      var testObject = new ClimberAnalysis(climber, 1);
 
       // Act.
       int? result = testObject.AverageGradeClimbed;
