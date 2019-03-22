@@ -33,15 +33,24 @@
         <th>Rank</th>
         <th>Climber</th>
         <th># Climbs</th>
+        <th>Diff.</th>
       </tr>
       </thead>
       @{
-        foreach (var entry in @Model.Scoreboard.RankingByClimber)
+        int bestRouteCount = Model.Scoreboard.RankingByClimber.OrderBy(x => x.Value).First().Key.RouteCount;
+
+        foreach (var entry in @Model.Scoreboard.RankingByClimber.OrderBy(x => x.Value))
         {
+          int rank = entry.Value;
+          string name = entry.Key.Name;
+          int routeCount = entry.Key.RouteCount;
+          string toWin = (rank > 1 ? $"{bestRouteCount - routeCount}" : "-");
+
           <tr>
-            <td style="text-align: center;">@entry.Value</td>
-            <td style="text-align: left;"><a href="#@entry.Key.Name.Replace(" ", "")">@entry.Key.Name</a></td>
-            <td style="text-align: center;">@entry.Key.RouteCount</td>
+            <td style="text-align: center;">@rank</td>
+            <td style="text-align: left;"><a href="#@name.Replace(" ", "")">@name</a></td>
+            <td style="text-align: center;">@routeCount</td>
+            <td style="text-align: center; font-size: smaller; vertical-align: middle;">-@toWin</td>
           </tr>
         }
       }
