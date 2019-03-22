@@ -47,9 +47,16 @@
         name = nameAndGrade;
       }
 
-      int.TryParse(
-        nameAndGrade.Substring(openingBraceIndex + 1, closingBraceIndex - openingBraceIndex - 1),
-        out grade);
+      string gradeText = nameAndGrade.Substring(openingBraceIndex + 1, closingBraceIndex - openingBraceIndex - 1);
+
+      bool gradeParsedOk = int.TryParse(gradeText, out grade);
+
+      if (!gradeParsedOk)
+      {
+        int convertedGrade = GradeConverter.ConvertOldSaToSaSport(gradeText);
+
+        grade = convertedGrade > 0 ? convertedGrade : grade;
+      }
     }
 
     public string Name { get; }

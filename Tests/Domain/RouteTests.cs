@@ -61,5 +61,32 @@ namespace Tests.Domain
       Assert.AreEqual(17, route.Grade);
       Assert.True(route.HasGrade);
     }
+
+    [Test]
+    public void Create_GivenNameAndLetterGrade_ShouldReturnRouteWithNameAndSportGrade()
+    {
+      // Arrange.
+      // Act.
+      Route route = Route.Create("RouteName (F1)");
+
+      // Assert.
+      Assert.NotNull(route);
+      Assert.AreEqual("RouteName", route.Name);
+      Assert.AreEqual(17, route.Grade);
+      Assert.True(route.HasGrade);
+    }
+
+    [Test]
+    public void Create_GivenNameAndUnknownLetterGrade_ShouldReturnRouteWithNameAndNoGrade()
+    {
+      // Arrange.
+      // Act.
+      Route route = Route.Create("RouteName (X)");
+
+      // Assert.
+      Assert.NotNull(route);
+      Assert.AreEqual("RouteName", route.Name);
+      Assert.False(route.HasGrade);
+    }
   }
 }
