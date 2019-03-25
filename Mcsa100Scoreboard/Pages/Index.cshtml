@@ -21,7 +21,7 @@
 <!-- Header banner -->
 <div class="panel panel-default" style="background-color: rgba(255, 255, 255, 0.7);">
   <h1 align="center" class="page-heading">MCSA-KZN 100 Climbs</h1>
-  <h4 align="center">~ <span style="font-weight: bold;">@Model.Scoreboard.AnalysedClimbers.Sum(c => c.Climber.RouteCount)</span> climbs logged ~</h4>
+  <h4 align="center">~ <span style="font-weight: bold;">@Model.Scoreboard.AnalysedClimbersInRankOrder.Sum(c => c.Climber.RouteCount)</span> climbs logged ~</h4>
 </div>
 
 <!-- Ranking table -->
@@ -40,11 +40,11 @@
       </tr>
       </thead>
       @{
-        if (Model.Scoreboard.AnalysedClimbers.Any())
+        if (Model.Scoreboard.AnalysedClimbersInRankOrder.Any())
         {
-          int bestRouteCount = Model.Scoreboard.AnalysedClimbers[0].Climber.RouteCount;
+          int bestRouteCount = Model.Scoreboard.AnalysedClimbersInRankOrder[0].Climber.RouteCount;
 
-          foreach (var climber in @Model.Scoreboard.AnalysedClimbers)
+          foreach (var climber in @Model.Scoreboard.AnalysedClimbersInRankOrder)
           {
             int rank = climber.Rank;
             string name = climber.Climber.Name;
@@ -83,7 +83,7 @@
 
 <!-- Climbers' routes -->
 @{
-  foreach (var climber in @Model.Scoreboard.AnalysedClimbers)
+  foreach (var climber in @Model.Scoreboard.AnalysedClimbersInRankOrder)
   {
     <p>
       <div>

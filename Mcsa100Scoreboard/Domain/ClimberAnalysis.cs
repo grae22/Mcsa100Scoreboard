@@ -11,7 +11,7 @@ namespace Mcsa100Scoreboard.Domain
     public int? LowestGradeClimbed { get; }
     public int? AverageGradeClimbed { get; }
 
-    public ClimberAnalysis(IClimber climber, int rank)
+    public ClimberAnalysis(in IClimber climber, in int rank)
     {
       if (climber == null)
       {
