@@ -49,6 +49,34 @@ namespace Tests.Domain
     }
 
     [Test]
+    public void Create_GivenGradeWithinName_ShouldReturnRouteWithNameAndGrade()
+    {
+      // Arrange.
+      // Act.
+      Route route = Route.Create("Route (17) Name");
+
+      // Assert.
+      Assert.NotNull(route);
+      Assert.AreEqual("Route Name", route.Name);
+      Assert.AreEqual(17, route.Grade);
+      Assert.True(route.HasGrade);
+    }
+
+    [Test]
+    public void Create_GivenGradeBeforeName_ShouldReturnRouteWithNameAndGrade()
+    {
+      // Arrange.
+      // Act.
+      Route route = Route.Create("(17) Route Name");
+
+      // Assert.
+      Assert.NotNull(route);
+      Assert.AreEqual("Route Name", route.Name);
+      Assert.AreEqual(17, route.Grade);
+      Assert.True(route.HasGrade);
+    }
+
+    [Test]
     public void Create_GivenGradeOnly_ShouldReturnGradeAsNameAndGrade()
     {
       // Arrange.
@@ -72,7 +100,7 @@ namespace Tests.Domain
       // Assert.
       Assert.NotNull(route);
       Assert.AreEqual("RouteName", route.Name);
-      Assert.AreEqual(17, route.Grade);
+      Assert.AreEqual(13, route.Grade);
       Assert.True(route.HasGrade);
     }
 

@@ -39,7 +39,8 @@
       }
 
       name = nameAndGrade
-        .Substring(0, openingBraceIndex)
+        .Remove(openingBraceIndex, closingBraceIndex - openingBraceIndex + 1)
+        .Replace("  ", " ")
         .Trim();
 
       if (string.IsNullOrWhiteSpace(name))
