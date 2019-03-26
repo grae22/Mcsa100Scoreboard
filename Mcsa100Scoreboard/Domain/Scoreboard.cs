@@ -32,8 +32,8 @@ namespace Mcsa100Scoreboard.Domain
       var sortedAnalysedClimbers =
         analysedClimbers
           .OrderBy(c => c.Rank)
-          .ThenByDescending(c => c.HasHighestGradedClimb)
-          .ThenByDescending(c => c.HasHighestAverageGrade)
+          .ThenByDescending(c => c.HighestGradeClimbed)
+          .ThenByDescending(c => c.AverageGradeClimbed)
           .ThenByDescending(c => c.LowestGradeClimbed);
 
       AnalysedClimbersInRankOrder = sortedAnalysedClimbers.ToArray();
