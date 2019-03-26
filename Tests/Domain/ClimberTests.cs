@@ -69,5 +69,27 @@ namespace Tests.Domain
       // Assert.
       Assert.AreEqual(routes.Length, climber.RouteCount);
     }
+
+    [Test]
+    public void GradedRoutes_GivenRoutes_ShouldReturnOnlyGradedRoutes()
+    {
+      // Arrange.
+      const string name = "Name123";
+
+      Route[] routes =
+      {
+        Route.Create("Route1 (10)"),
+        Route.Create("Route2"),
+        Route.Create("Route3 (F3)")
+      };
+
+      // Act.
+      Climber climber = Climber.Create(name, routes);
+
+      // Assert.
+      Assert.True(climber.GradedRoutes.Any(r => r.Name == "Route1"));
+      Assert.True(climber.GradedRoutes.Any(r => r.Name == "Route3"));
+      Assert.False(climber.GradedRoutes.Any(r => r.Name == "Route2"));
+    }
   }
 }

@@ -6,6 +6,7 @@ namespace Mcsa100Scoreboard.Domain
   {
     string Name { get; }
     IEnumerable<Route> Routes { get; }
+    IEnumerable<Route> GradedRoutes { get; }
     int RouteCount { get; }
   }
 }

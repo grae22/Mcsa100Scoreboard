@@ -25,7 +25,7 @@ namespace Mcsa100Scoreboard.Domain
       {
         Climber climber = pair.Key;
         int rank = pair.Value;
-        var analysis = new ClimberAnalysis(climber, rank);
+        var analysis = new ClimberAnalysis(climber, rank, parsedInput.Climbers);
         analysedClimbers.Add(analysis);
       }
 

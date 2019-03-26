@@ -22,7 +22,10 @@ namespace Mcsa100Scoreboard.Domain
 
     public string Name { get; }
     public IEnumerable<Route> Routes { get; }
+    public IEnumerable<Route> GradedRoutes => _gradedRoutes;
     public int RouteCount => Routes.Count();
+
+    private readonly List<Route> _gradedRoutes = new List<Route>();
 
     private Climber(
       in string name,
@@ -33,6 +36,8 @@ namespace Mcsa100Scoreboard.Domain
 
       Name = name;
       Routes = new List<Route>(routes);
+
+      _gradedRoutes.AddRange(routes.Where(r => r.HasGrade));
     }
 
     private static void ValidateName(in string name)

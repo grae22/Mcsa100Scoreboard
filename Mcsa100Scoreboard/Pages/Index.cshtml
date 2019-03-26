@@ -50,14 +50,18 @@
             string name = climber.Climber.Name;
             int routeCount = climber.Climber.RouteCount;
             string toWin = (rank > 1 ? $"{bestRouteCount - routeCount}" : "-");
+            string averageGradeFontSize = climber.HasHighestAverageGrade ? "normal" : "smaller";
+            string highestGradeFontSize = climber.HasHighestGradedClimb ? "normal" : "smaller";
+            string averageGradeFontWeight = climber.HasHighestAverageGrade ? "bold" : "normal";
+            string highestGradeFontWeight = climber.HasHighestGradedClimb ? "bold" : "normal";
 
             <tr>
               <td style="text-align: center;">@rank</td>
               <td style="text-align: left;"><a href="#@name.Replace(" ", "")">@name</a></td>
               <td style="text-align: center;">@routeCount</td>
               <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #606060;">-@toWin</td>
-              <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #60a0d0;">@climber.AverageGradeClimbed</td>
-              <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #a0a0a0;">@climber.HighestGradeClimbed</td>
+              <td style="text-align: center; font-size: @averageGradeFontSize; font-weight: @averageGradeFontWeight; vertical-align: middle; color: #60a0d0;">@climber.AverageGradeClimbed</td>
+              <td style="text-align: center; font-size: @highestGradeFontSize; font-weight: @highestGradeFontWeight; vertical-align: middle; color: #a0a0a0;">@climber.HighestGradeClimbed</td>
               <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #a0a0a0;">@climber.LowestGradeClimbed</td>
             </tr>
           }
