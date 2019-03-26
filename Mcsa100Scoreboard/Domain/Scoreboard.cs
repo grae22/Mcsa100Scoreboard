@@ -23,13 +23,20 @@ namespace Mcsa100Scoreboard.Domain
 
       foreach (var pair in ranker.RankingByClimber.OrderBy(p => p.Value))
       {
-        Climber climber = pair.Key;
+        IClimber climber = pair.Key;
         int rank = pair.Value;
         var analysis = new ClimberAnalysis(climber, rank, parsedInput.Climbers);
         analysedClimbers.Add(analysis);
       }
 
-      AnalysedClimbersInRankOrder = analysedClimbers.ToArray();
+      var sortedAnalysedClimbers =
+        analysedClimbers
+          .OrderBy(c => c.Rank)
+          .ThenByDescending(c => c.HasHighestGradedClimb)
+          .ThenByDescending(c => c.HasHighestAverageGrade)
+          .ThenByDescending(c => c.LowestGradeClimbed);
+
+      AnalysedClimbersInRankOrder = sortedAnalysedClimbers.ToArray();
     }
   }
 }

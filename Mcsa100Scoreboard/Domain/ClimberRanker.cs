@@ -6,11 +6,11 @@ namespace Mcsa100Scoreboard.Domain
 {
   public class ClimberRanker
   {
-    public IReadOnlyDictionary<Climber, int> RankingByClimber => _rankedClimbers;
+    public IReadOnlyDictionary<IClimber, int> RankingByClimber => _rankedClimbers;
 
-    private readonly Dictionary<Climber, int> _rankedClimbers = new Dictionary<Climber, int>();
+    private readonly Dictionary<IClimber, int> _rankedClimbers = new Dictionary<IClimber, int>();
 
-    public ClimberRanker(in IEnumerable<Climber> climbers)
+    public ClimberRanker(in IEnumerable<IClimber> climbers)
     {
       if (climbers == null)
       {
@@ -20,7 +20,7 @@ namespace Mcsa100Scoreboard.Domain
       BuildRankings(climbers);
     }
 
-    private void BuildRankings(in IEnumerable<Climber> climbers)
+    private void BuildRankings(in IEnumerable<IClimber> climbers)
     {
       var climbersGroupedByRouteCounts = climbers.GroupBy(c => c.RouteCount);
 
