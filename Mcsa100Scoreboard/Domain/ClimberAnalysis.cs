@@ -8,16 +8,16 @@ namespace Mcsa100Scoreboard.Domain
   {
     public IClimber Climber { get; }
     public int Rank { get; }
-    public int? HighestGradeClimbed { get; }
-    public int? LowestGradeClimbed { get; }
-    public int? AverageGradeClimbed { get; }
-    public bool HasHighestGradedClimb { get; }
-    public bool HasHighestAverageGrade { get; }
+    public int? HighestGradeClimbed { get; private set; }
+    public int? LowestGradeClimbed { get; private set; }
+    public int? AverageGradeClimbed { get; private set; }
+    public bool HasHighestGradedClimb { get; private set; }
+    public bool HasHighestAverageGrade { get; private set; }
 
     public ClimberAnalysis(
       in IClimber climber,
       in int rank,
-      in IEnumerable<IClimber> climbers)
+      in IEnumerable<IClimber> allClimbers)
     {
       if (climber == null)
       {
@@ -32,31 +32,38 @@ namespace Mcsa100Scoreboard.Domain
       Climber = climber;
       Rank = rank;
 
-      if (climber.GradedRoutes.Any())
+      AnalyseGradedClimbs(allClimbers);
+    }
+
+    private void AnalyseGradedClimbs(in IEnumerable<IClimber> allClimbers)
+    {
+      if (!Climber.GradedRoutes.Any())
       {
-        HighestGradeClimbed =
-          climber
-            .GradedRoutes
-            .Max(r => r.Grade);
-
-        LowestGradeClimbed =
-          climber
-            .GradedRoutes
-            .Min(r => r.Grade);
-
-        AverageGradeClimbed =
-          (int?)climber
-            .GradedRoutes
-            .Average(r => (decimal?)r.Grade);
-
-        HasHighestGradedClimb = DetermineIfClimberHasHighestGradedClimb(Climber, climbers);
-        HasHighestAverageGrade = DetermineIfClimberHasHighestAverageGrade(Climber, climbers);
+        return;
       }
+
+      HighestGradeClimbed =
+        Climber
+          .GradedRoutes
+          .Max(r => r.Grade);
+
+      LowestGradeClimbed =
+        Climber
+          .GradedRoutes
+          .Min(r => r.Grade);
+
+      AverageGradeClimbed =
+        (int?)Climber
+          .GradedRoutes
+          .Average(r => (decimal?)r.Grade);
+
+      HasHighestGradedClimb = DetermineIfClimberHasHighestGradedClimb(Climber, allClimbers);
+      HasHighestAverageGrade = DetermineIfClimberHasHighestAverageGrade(Climber, allClimbers);
     }
 
     private static bool DetermineIfClimberHasHighestGradedClimb(
       in IClimber climber,
-      in IEnumerable<IClimber> climbers)
+      in IEnumerable<IClimber> allClimbers)
     {
       if (!climber.GradedRoutes.Any())
       {
@@ -64,7 +71,7 @@ namespace Mcsa100Scoreboard.Domain
       }
 
       int highestGrade =
-        climbers
+        allClimbers
           .Where(c => c.GradedRoutes.Any())
           .Max(c => c.GradedRoutes.Max(r => r.Grade));
 
@@ -73,7 +80,7 @@ namespace Mcsa100Scoreboard.Domain
 
     private static bool DetermineIfClimberHasHighestAverageGrade(
       in IClimber climber,
-      in IEnumerable<IClimber> climbers)
+      in IEnumerable<IClimber> allClimbers)
     {
       if (!climber.GradedRoutes.Any())
       {
@@ -81,7 +88,7 @@ namespace Mcsa100Scoreboard.Domain
       }
 
       int highestAverageGrade = (int)
-        climbers
+        allClimbers
           .Where(c => c.GradedRoutes.Any())
           .Max(c => c.GradedRoutes.Average(r => r.Grade));
 
