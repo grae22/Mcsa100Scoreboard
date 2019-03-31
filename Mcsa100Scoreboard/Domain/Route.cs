@@ -1,4 +1,6 @@
-﻿namespace Mcsa100Scoreboard.Domain
+﻿using System;
+
+namespace Mcsa100Scoreboard.Domain
 {
   public class Route
   {
@@ -9,18 +11,21 @@
       ExtractNameAndGrade(
         nameAndGrade,
         out string name,
-        out int grade);
+        out int grade,
+        out string gradeFriendly);
 
-      return new Route(name, grade);
+      return new Route(name, grade, gradeFriendly);
     }
 
     private static void ExtractNameAndGrade(
       in string nameAndGrade,
       out string name,
-      out int grade)
+      out int grade,
+      out string gradeFriendly)
     {
       name = null;
       grade = NoGrade;
+      gradeFriendly = "(?)";
 
       if (string.IsNullOrWhiteSpace(nameAndGrade))
       {
@@ -58,16 +63,23 @@
 
         grade = convertedGrade > 0 ? convertedGrade : grade;
       }
+
+      gradeFriendly = $"({gradeText})";
     }
 
     public string Name { get; }
     public int Grade { get; }
+    public string GradeFriendly { get; }
     public bool HasGrade => Grade != NoGrade;
 
-    public Route(in string name, in int grade)
+    private Route(
+      in string name,
+      in int grade,
+      in string gradeFriendly)
     {
-      Name = name;
+      Name = name ?? throw new ArgumentNullException(nameof(name));
       Grade = grade;
+      GradeFriendly = gradeFriendly ?? throw new ArgumentNullException(nameof(gradeFriendly));
     }
   }
 }

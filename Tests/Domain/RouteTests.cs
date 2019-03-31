@@ -116,5 +116,41 @@ namespace Tests.Domain
       Assert.AreEqual("RouteName", route.Name);
       Assert.False(route.HasGrade);
     }
+
+    [Test]
+    public void GradeFriendly_GivenSportGrade_ShouldReturnInSportFormat()
+    {
+      // Arrange.
+      // Act.
+      Route route = Route.Create("RouteName (19)");
+
+      // Assert.
+      Assert.NotNull(route);
+      Assert.AreEqual("(19)", route.GradeFriendly);
+    }
+
+    [Test]
+    public void GradeFriendly_GivenOldSaGrade_ShouldReturnInOldSaFormat()
+    {
+      // Arrange.
+      // Act.
+      Route route = Route.Create("RouteName (F1)");
+
+      // Assert.
+      Assert.NotNull(route);
+      Assert.AreEqual("(F1)", route.GradeFriendly);
+    }
+
+    [Test]
+    public void GradeFriendly_GivenNoGrade_ShouldReturnQuestionMark()
+    {
+      // Arrange.
+      // Act.
+      Route route = Route.Create("RouteName");
+
+      // Assert.
+      Assert.NotNull(route);
+      Assert.AreEqual("(?)", route.GradeFriendly);
+    }
   }
 }
