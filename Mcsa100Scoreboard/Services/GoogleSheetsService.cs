@@ -10,18 +10,37 @@ namespace Mcsa100Scoreboard.Services
   {
     public async Task<T> RetrieveInput<T>(Uri address)
     {
-      using (var client = new HttpClient())
-      {
-        using (var response = await client.GetAsync(address))
-        {
-          using (var content = response.Content)
-          {
-            string data = await content.ReadAsStringAsync();
+      const int maxAttempts = 5;
 
-            return JsonConvert.DeserializeObject<T>(data);
+      for (int i = 0; i < maxAttempts; i++)
+      {
+        try
+        {
+          using (var client = new HttpClient())
+          {
+            using (var response = await client.GetAsync(address))
+            {
+              using (var content = response.Content)
+              {
+                string data = await content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<T>(data);
+              }
+            }
           }
         }
+        catch (Exception)
+        {
+          if (i == maxAttempts - 1)
+          {
+            throw;
+          }
+
+          await Task.Delay(1000);
+        }
       }
+
+      throw new Exception("Data retrieval failed");
     }
   }
 }

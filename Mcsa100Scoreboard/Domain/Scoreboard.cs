@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using Mcsa100Scoreboard.Models;
@@ -14,7 +13,8 @@ namespace Mcsa100Scoreboard.Domain
     {
       if (input == null)
       {
-        throw new ArgumentNullException(nameof(input));
+        AnalysedClimbersInRankOrder = new ClimberAnalysis[0];
+        return;
       }
 
       var parsedInput = new InputParser(input);

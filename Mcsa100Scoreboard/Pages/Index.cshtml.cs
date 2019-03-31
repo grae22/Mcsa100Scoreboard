@@ -28,7 +28,17 @@ namespace Mcsa100Scoreboard.Pages
     public async Task OnGet()
     {
       var address = new Uri($"https://sheets.googleapis.com/v4/spreadsheets/{_googleSheetId}/values/Sheet1!A1:Z500?key={_googleApiKey}");
-      var input = await _googleSheetService.RetrieveInput<InputModel>(address);
+
+      InputModel input = null;
+
+      try
+      {
+        input = await _googleSheetService.RetrieveInput<InputModel>(address);
+      }
+      catch (Exception)
+      {
+        // Yep.
+      }
 
       Scoreboard = new Scoreboard(input);
     }
