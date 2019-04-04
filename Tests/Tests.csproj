@@ -20,7 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestData\ScoreboardController_TestData.json">
+    <None Update="TestData\InputModelTests_TestData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\InputParserTests_TestData.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

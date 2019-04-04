@@ -10,11 +10,11 @@ namespace Tests.TestData
   {
     private static string _rawData;
 
-    public static InputModel LoadTestInput()
+    public static InputModel LoadTestInput(in string path)
     {
       if (_rawData == null)
       {
-        _rawData = File.ReadAllText(@"TestData\ScoreboardController_TestData.json");
+        _rawData = File.ReadAllText(path);
       }
 
       return JsonConvert.DeserializeObject<InputModel>(_rawData);
