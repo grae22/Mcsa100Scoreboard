@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Mcsa100Scoreboard.Domain
 {
-  public class Scoreboard
+  public class Scoreboard : IScoreboard
   {
     public ClimberAnalysis[] AnalysedClimbersInRankOrder { get; }
 
