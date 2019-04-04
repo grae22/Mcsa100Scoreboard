@@ -1,31 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using Mcsa100Scoreboard.Models;
-
 namespace Mcsa100Scoreboard.Domain
 {
   public class Scoreboard
   {
     public ClimberAnalysis[] AnalysedClimbersInRankOrder { get; }
 
-    public Scoreboard(in InputModel input)
+    public Scoreboard(in IEnumerable<IClimber> climbers)
     {
-      if (input == null)
+      if (climbers == null)
       {
         AnalysedClimbersInRankOrder = new ClimberAnalysis[0];
         return;
       }
 
-      var parsedInput = new InputParser(input);
-      var ranker = new ClimberRanker(parsedInput.Climbers);
+      var ranker = new ClimberRanker(climbers);
       var analysedClimbers = new List<ClimberAnalysis>();
 
       foreach (var pair in ranker.RankingByClimber.OrderBy(p => p.Value))
       {
         IClimber climber = pair.Key;
         int rank = pair.Value;
-        var analysis = new ClimberAnalysis(climber, rank, parsedInput.Climbers);
+        var analysis = new ClimberAnalysis(climber, rank, climbers);
         analysedClimbers.Add(analysis);
       }
 

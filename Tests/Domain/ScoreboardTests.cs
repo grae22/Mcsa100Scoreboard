@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 
 using Mcsa100Scoreboard.Domain;
-using Mcsa100Scoreboard.Models;
 
 using NUnit.Framework;
 
@@ -14,19 +13,15 @@ namespace Tests.Domain
     public void Constructor_GivenInputModel_ShouldRankClimbersByRouteCountDescending()
     {
       // Arrange.
-      var model = new InputModel
+      Climber[] climbers =
       {
-        Values = new[]
-        {
-          new[] { "Climb number", "Climber1", "Climber2", "Climber3" },
-          new[] { "1", "C1R1", "C2R1", "C3R1" },
-          new[] { "2", "", "C2R2", "C3R2" },
-          new[] { "3", "", "", "C3R3" },
-        }
+        Climber.Create("Climber1", new[] { Route.Create("C1R1") }),
+        Climber.Create("Climber2", new[] { Route.Create("C2R1"), Route.Create("C2R2") }),
+        Climber.Create("Climber3", new[] { Route.Create("C3R1"), Route.Create("C3R2"), Route.Create("C3R3") })
       };
 
       // Act.
-      var testObject = new Scoreboard(model);
+      var testObject = new Scoreboard(climbers);
 
       // Assert.
       Assert.AreEqual("Climber3", testObject.AnalysedClimbersInRankOrder.First().Climber.Name);

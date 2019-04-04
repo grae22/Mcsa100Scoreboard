@@ -40,7 +40,15 @@ namespace Mcsa100Scoreboard.Pages
         // Yep.
       }
 
-      Scoreboard = new Scoreboard(input);
+      if (input == null)
+      {
+        Scoreboard = new Scoreboard(null);
+        return;
+      }
+
+      var parsedInput = new InputParser(input);
+
+      Scoreboard = new Scoreboard(parsedInput.Climbers);
     }
   }
 }
