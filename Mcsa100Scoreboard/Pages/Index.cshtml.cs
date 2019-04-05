@@ -12,6 +12,7 @@ namespace Mcsa100Scoreboard.Pages
   public class IndexModel : PageModel
   {
     public Scoreboard Scoreboard { get; private set; }
+    public ScoreboardNarrator Narrative { get; private set; }
 
     private readonly IGoogleSheetService _googleSheetService;
     private readonly string _googleSheetId;
@@ -49,6 +50,10 @@ namespace Mcsa100Scoreboard.Pages
       var parsedInput = new InputParser(input);
 
       Scoreboard = new Scoreboard(parsedInput.Climbers);
+
+      // TODO: Narrative - we only want for 'this week'.
+      var oldScoreboard = new Scoreboard(new IClimber[0]);
+      Narrative = new ScoreboardNarrator(oldScoreboard, Scoreboard);
     }
   }
 }

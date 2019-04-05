@@ -85,6 +85,27 @@
   </div>
 </p>
 
+<!-- Narrative -->
+<p>
+  <div>
+    <table class="table table-sizetocontent" style="background-color: rgba(255, 255, 255, 0.75);">
+      @{
+        foreach (var entry in @Model.Narrative.Narrative.Split(Environment.NewLine))
+        {
+          if (entry.Length == 0)
+          {
+            continue;
+          }
+
+          <tr>
+            <td style="font-size: smaller; color: #000000; text-align: left;">@entry</td>
+          </tr>
+        }
+      }
+    </table>
+  </div>
+</p>
+
 <!-- Climbers' routes -->
 @{
   foreach (var climber in @Model.Scoreboard.AnalysedClimbersInRankOrder)
