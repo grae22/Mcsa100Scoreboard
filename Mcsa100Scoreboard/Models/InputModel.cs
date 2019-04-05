@@ -2,8 +2,8 @@
 {
   public class InputModel
   {
-    public string Range { get; set; }
-    public string MajorDimension { get; set; }
-    public string[][] Values { get; set; }
+    public string range { get; set; }
+    public string majorDimension { get; set; }
+    public string[][] values { get; set; }
   }
 }

@@ -21,12 +21,12 @@ namespace Tests.Models
       var model = JsonConvert.DeserializeObject<InputModel>(rawData);
 
       // Assert.
-      Assert.AreEqual("Sheet1!A1:Z500", model.Range);
-      Assert.AreEqual("ROWS", model.MajorDimension);
-      Assert.AreEqual("Climb number", model.Values[0][0]);
-      Assert.AreEqual("1", model.Values[1][0]);
-      Assert.AreEqual("100", model.Values[100][0]);
-      Assert.AreEqual("Travel Desk 18", model.Values[24][2]);
+      Assert.AreEqual("Sheet1!A1:Z500", model.range);
+      Assert.AreEqual("ROWS", model.majorDimension);
+      Assert.AreEqual("Climb number", model.values[0][0]);
+      Assert.AreEqual("1", model.values[1][0]);
+      Assert.AreEqual("100", model.values[100][0]);
+      Assert.AreEqual("Travel Desk 18", model.values[24][2]);
     }
   }
 }

@@ -25,7 +25,7 @@ namespace Mcsa100Scoreboard.Domain
 
       Climbers = climbers;
 
-      if (input.Values.Length == 0)
+      if (input.values.Length == 0)
       {
         return;
       }
@@ -35,18 +35,18 @@ namespace Mcsa100Scoreboard.Domain
 
       // Get names of each climber (1st row).
       // [Climb number][Climber 1][Climber 2][Climber N]
-      for (int column = 1; column < input.Values[0].Length; column++)
+      for (int column = 1; column < input.values[0].Length; column++)
       {
         int climberIndex = column - 1;
 
-        climberNameByClimberIndex.Add(climberIndex, input.Values[0][column]);
+        climberNameByClimberIndex.Add(climberIndex, input.values[0][column]);
         routesByClimberIndex.Add(climberIndex, new List<string>());
       }
 
       // Get each climber's routes climbed.
-      for (int row = 1; row < input.Values.Length; row++)
+      for (int row = 1; row < input.values.Length; row++)
       {
-        for (int column = 1; column < input.Values[row].Length; column++)
+        for (int column = 1; column < input.values[row].Length; column++)
         {
           int climberIndex = column - 1;
 
@@ -55,7 +55,7 @@ namespace Mcsa100Scoreboard.Domain
             break;
           }
 
-          string routeName = input.Values[row][column];
+          string routeName = input.values[row][column];
 
           if (string.IsNullOrWhiteSpace(routeName) ||
               routeName.StartsWith("#"))

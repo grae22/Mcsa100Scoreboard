@@ -42,5 +42,37 @@ namespace Mcsa100Scoreboard.Services
 
       throw new Exception("Data retrieval failed");
     }
+
+    public async Task<bool> Write(Uri address, string content)
+    {
+      var httpContent = new StringContent(content);
+
+      const int maxAttempts = 5;
+
+      for (int i = 0; i < maxAttempts; i++)
+      {
+        try
+        {
+          using (var client = new HttpClient())
+          {
+            using (var response = await client.PutAsync(address, httpContent))
+            {
+              return response.IsSuccessStatusCode;
+            }
+          }
+        }
+        catch (Exception)
+        {
+          if (i == maxAttempts - 1)
+          {
+            throw;
+          }
+
+          await Task.Delay(1000);
+        }
+      }
+
+      throw new Exception("Data retrieval failed");
+    }
   }
 }

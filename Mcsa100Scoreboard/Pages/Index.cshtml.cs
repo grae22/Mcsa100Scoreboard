@@ -7,12 +7,16 @@ using Mcsa100Scoreboard.Services;
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+using Newtonsoft.Json;
+
 namespace Mcsa100Scoreboard.Pages
 {
   public class IndexModel : PageModel
   {
     public Scoreboard Scoreboard { get; private set; }
     public ScoreboardNarrator Narrator { get; private set; }
+
+    private const string GoogleSheetsBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
 
     private readonly IGoogleSheetService _googleSheetService;
     private readonly string _googleSheetId;
@@ -30,8 +34,8 @@ namespace Mcsa100Scoreboard.Pages
 
     public async Task OnGet()
     {
-      var address = new Uri($"https://sheets.googleapis.com/v4/spreadsheets/{_googleSheetId}/values/Sheet1!A1:Z500?key={_googleApiKey}");
-      var delayedBackupAddress = new Uri($"https://sheets.googleapis.com/v4/spreadsheets/{_delayedBackupGoogleSheetId}/values/Sheet1!A1:Z500?key={_googleApiKey}");
+      var address = new Uri($"{GoogleSheetsBaseUrl}{_googleSheetId}/values/Sheet1!A1:Z500?key={_googleApiKey}");
+      var delayedBackupAddress = new Uri($"{GoogleSheetsBaseUrl}{_delayedBackupGoogleSheetId}/values/Sheet1!A1:Z500?key={_googleApiKey}");
 
       InputModel input = null;
       InputModel delayedBackupInput = null;
@@ -46,7 +50,8 @@ namespace Mcsa100Scoreboard.Pages
         // Yep.
       }
 
-      if (input == null)
+      if (input == null ||
+          delayedBackupInput == null)
       {
         Scoreboard = new Scoreboard(null);
         Narrator = new ScoreboardNarrator(null, null);
@@ -58,9 +63,39 @@ namespace Mcsa100Scoreboard.Pages
 
       Scoreboard = new Scoreboard(parsedInput.Climbers);
 
-      // TODO: Narrative - we only want for 'this week'.
       var oldScoreboard = new Scoreboard(delayedBackupParsedInput.Climbers);
       Narrator = new ScoreboardNarrator(oldScoreboard, Scoreboard);
+
+      // TODO
+      //await UpdateDelayedBackup(input, delayedBackupInput);
+    }
+
+    private async Task UpdateDelayedBackup(
+      InputModel input,
+      InputModel delayedBackupInput)
+    {
+      var delayedBackupAddress = new Uri($"{GoogleSheetsBaseUrl}{_delayedBackupGoogleSheetId}/values/Sheet2!A1:Z500?valueInputOption=USER_ENTERED?key={_googleApiKey}");
+
+      if (!DateTime.TryParse(delayedBackupInput.values[0][0], out DateTime currentBackupTimestamp))
+      {
+        currentBackupTimestamp = DateTime.MinValue;
+      }
+
+      TimeSpan delta = DateTime.Now - currentBackupTimestamp;
+
+      if (delta.TotalDays <= 7)
+      {
+        return;
+      }
+
+      // TODO: Remove.
+      input.range = "Sheet2!A1:Z500";
+
+      input.values[0][0] = $"{DateTime.Now:yyyy/MM/dd}";
+
+      var result = await _googleSheetService.Write(
+        delayedBackupAddress,
+        JsonConvert.SerializeObject(input));
     }
   }
 }
