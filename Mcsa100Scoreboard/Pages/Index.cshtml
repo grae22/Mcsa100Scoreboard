@@ -90,7 +90,7 @@
   <div>
     <table class="table table-sizetocontent" style="background-color: rgba(255, 255, 255, 0.75);">
       @{
-        foreach (var entry in @Model.Narrative.Narrative.Split(Environment.NewLine))
+        foreach (var entry in @Model.Narrator.Narrative.Split(Environment.NewLine))
         {
           if (entry.Length == 0)
           {

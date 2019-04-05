@@ -64,7 +64,7 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName added 'Route2'.", testObject.Narrative);
+      StringAssert.Contains("ClimberName added 'Route2'", testObject.Narrative);
     }
 
     [Test]
@@ -123,7 +123,7 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName added 'Route2' and 1 other climb(s).", testObject.Narrative);
+      StringAssert.Contains("ClimberName added 'Route2' and 1 other climb(s)", testObject.Narrative);
     }
 
     [Test]
@@ -162,7 +162,7 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName joined and added 3 climb(s).", testObject.Narrative);
+      StringAssert.Contains("ClimberName joined and added 3 climb(s)", testObject.Narrative);
     }
 
     [Test]
@@ -187,7 +187,7 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName joined.", testObject.Narrative);
+      StringAssert.Contains("ClimberName joined", testObject.Narrative);
     }
   }
 }

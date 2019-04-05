@@ -15,6 +15,12 @@ namespace Mcsa100Scoreboard.Domain
       in IScoreboard scoreboardAtTime1,
       in IScoreboard scoreboardAtTime2)
     {
+      if (scoreboardAtTime1 == null ||
+          scoreboardAtTime2 == null)
+      {
+        return;
+      }
+
       GetClimbersWhoAddedRoutes(
         scoreboardAtTime1,
         scoreboardAtTime2,
@@ -111,11 +117,11 @@ namespace Mcsa100Scoreboard.Domain
 
         if (numberOfNewRoutes == 1)
         {
-          _narrativeBuilder.AppendLine($"{climberName} added '{newRoutes.First()}'.");
+          _narrativeBuilder.AppendLine($"{climberName} added '{newRoutes.First()}'");
         }
         else
         {
-          _narrativeBuilder.AppendLine($"{climberName} added '{newRoutes.First()}' and {numberOfNewRoutes - 1} other climb(s).");
+          _narrativeBuilder.AppendLine($"{climberName} added '{newRoutes.First()}' and {numberOfNewRoutes - 1} other climb(s)");
         }
       }
     }
@@ -128,11 +134,11 @@ namespace Mcsa100Scoreboard.Domain
 
         if (routeCount == 0)
         {
-          _narrativeBuilder.AppendLine($"{climberName} joined.");
+          _narrativeBuilder.AppendLine($"{climberName} joined");
         }
         else
         {
-          _narrativeBuilder.AppendLine($"{climberName} joined and added {routeCount} climb(s).");
+          _narrativeBuilder.AppendLine($"{climberName} joined and added {routeCount} climb(s)");
         }
       }
     }
