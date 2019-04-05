@@ -88,7 +88,11 @@
 <!-- Narrative -->
 <p>
   <div>
-    <table class="table table-sizetocontent" style="background-color: rgba(255, 255, 255, 0.75);">
+    <table class="table table-sizetocontent table-condensed">
+      <thead>
+        <th style="font-size: smaller; text-align: center; color: black; background-color: rgba(220, 220, 220, 0.75);">~ Recent Activity ~</th>
+      </thead>
+      <tbody style="background-color: rgba(255, 255, 255, 0.75);">
       @{
         foreach (var entry in @Model.Narrator.Narrative.Split(Environment.NewLine))
         {
@@ -98,10 +102,11 @@
           }
 
           <tr>
-            <td style="font-size: smaller; color: #000000; text-align: left;">@entry</td>
+            <td style="font-size: smaller; color: #000000; text-align: left;">@Html.Raw(@entry)</td>
           </tr>
         }
       }
+      </tbody>
     </table>
   </div>
 </p>

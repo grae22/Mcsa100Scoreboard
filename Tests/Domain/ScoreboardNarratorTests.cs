@@ -1,4 +1,6 @@
-﻿using Mcsa100Scoreboard.Domain;
+﻿using System.Text.RegularExpressions;
+
+using Mcsa100Scoreboard.Domain;
 
 using NSubstitute;
 
@@ -64,7 +66,7 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName added 'Route2'", testObject.Narrative);
+      StringAssert.Contains("ClimberName added 'Route2'", StripHtmlTags(testObject.Narrative));
     }
 
     [Test]
@@ -123,7 +125,7 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName added 'Route2' and 1 other climb(s)", testObject.Narrative);
+      StringAssert.Contains("ClimberName added 'Route2' and 1 other climb(s)", StripHtmlTags(testObject.Narrative));
     }
 
     [Test]
@@ -162,7 +164,7 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName joined and added 3 climb(s)", testObject.Narrative);
+      StringAssert.Contains("ClimberName joined and added 3 climb(s)", StripHtmlTags(testObject.Narrative));
     }
 
     [Test]
@@ -187,7 +189,12 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName joined", testObject.Narrative);
+      StringAssert.Contains("ClimberName joined", StripHtmlTags(testObject.Narrative));
+    }
+
+    private static string StripHtmlTags(in string html)
+    {
+      return Regex.Replace(html, "<.*?>", string.Empty);
     }
   }
 }
