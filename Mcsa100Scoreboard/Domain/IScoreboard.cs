@@ -2,6 +2,6 @@
 {
   public class IScoreboard
   {
-    ClimberAnalysis[] AnalysedClimbersInRankOrder { get; }
+    IClimberAnalysis[] AnalysedClimbersInRankOrder { get; }
   }
 }

@@ -24,10 +24,13 @@ namespace Tests.Domain
       var testObject = new Scoreboard(climbers);
 
       // Assert.
-      Assert.AreEqual("Climber3", testObject.AnalysedClimbersInRankOrder.First().Climber.Name);
-      Assert.AreEqual("Climber1", testObject.AnalysedClimbersInRankOrder.Last().Climber.Name);
-      Assert.AreEqual(3, testObject.AnalysedClimbersInRankOrder.First().Climber.RouteCount);
-      Assert.AreEqual(1, testObject.AnalysedClimbersInRankOrder.Last().Climber.RouteCount);
+      IClimberAnalysis firstClimberAnalysis = testObject.AnalysedClimbersInRankOrder.First();
+      IClimberAnalysis lastClimberAnalysis = testObject.AnalysedClimbersInRankOrder.Last();
+
+      Assert.AreEqual("Climber3", firstClimberAnalysis.Climber.Name);
+      Assert.AreEqual("Climber1", lastClimberAnalysis.Climber.Name);
+      Assert.AreEqual(3, firstClimberAnalysis.Climber.RouteCount);
+      Assert.AreEqual(1, lastClimberAnalysis.Climber.RouteCount);
     }
   }
 }

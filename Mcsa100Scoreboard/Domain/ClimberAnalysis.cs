@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Mcsa100Scoreboard.Domain
 {
-  public class ClimberAnalysis
+  public class ClimberAnalysis : IClimberAnalysis
   {
     public IClimber Climber { get; }
     public int Rank { get; }
