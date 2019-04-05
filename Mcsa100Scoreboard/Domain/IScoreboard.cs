@@ -1,6 +1,6 @@
 ﻿namespace Mcsa100Scoreboard.Domain
 {
-  public class IScoreboard
+  public interface IScoreboard
   {
     IClimberAnalysis[] AnalysedClimbersInRankOrder { get; }
   }
