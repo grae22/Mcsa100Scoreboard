@@ -44,7 +44,7 @@ namespace Tests.Domain
         .RouteCount
         .Returns(1);
 
-      climberInstance1
+      climberInstance2
         .Climber
         .RouteCount
         .Returns(2);
@@ -103,7 +103,7 @@ namespace Tests.Domain
         .RouteCount
         .Returns(1);
 
-      climberInstance1
+      climberInstance2
         .Climber
         .RouteCount
         .Returns(3);
@@ -130,10 +130,64 @@ namespace Tests.Domain
     public void Narrative_GivenNewClimber_ShouldReportClimberJoined()
     {
       // Arrange.
+      var route1 = Route.Create("Route1");
+      var route2 = Route.Create("Route2");
+      var route3 = Route.Create("Route3");
+
+      var climber = Substitute.For<IClimberAnalysis>();
+
+      climber
+        .Climber
+        .Name
+        .Returns("ClimberName");
+
+      climber
+        .Climber
+        .Routes
+        .Returns(new[] { route1, route2, route3 });
+
+      climber
+        .Climber
+        .RouteCount
+        .Returns(3);
+
+      var oldScoreboard = Substitute.For<IScoreboard>();
+      var newScoreboard = Substitute.For<IScoreboard>();
+
+      newScoreboard
+        .AnalysedClimbersInRankOrder
+        .Returns(new[] { climber });
 
       // Act.
+      var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
+      StringAssert.Contains("ClimberName joined and added 3 climb(s).", testObject.Narrative);
+    }
+
+    [Test]
+    public void Narrative_GivenNewClimberWithNoClimbs_ShouldReportClimberJoined()
+    {
+      // Arrange.
+      var climber = Substitute.For<IClimberAnalysis>();
+
+      climber
+        .Climber
+        .Name
+        .Returns("ClimberName");
+
+      var oldScoreboard = Substitute.For<IScoreboard>();
+      var newScoreboard = Substitute.For<IScoreboard>();
+
+      newScoreboard
+        .AnalysedClimbersInRankOrder
+        .Returns(new[] { climber });
+
+      // Act.
+      var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
+
+      // Assert.
+      StringAssert.Contains("ClimberName joined.", testObject.Narrative);
     }
   }
 }
