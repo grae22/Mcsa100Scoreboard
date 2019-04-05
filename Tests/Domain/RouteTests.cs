@@ -152,5 +152,41 @@ namespace Tests.Domain
       Assert.NotNull(route);
       Assert.AreEqual("(?)", route.GradeFriendly);
     }
+
+    [Test]
+    public void Equals_GivenSameNameAndGrade_ShouldReturnTrue()
+    {
+      // Arrange.
+      Route route1 = Route.Create("RouteName (19)");
+      Route route2 = Route.Create("RouteName (19)");
+
+      // Act.
+      bool result1 = route1.Equals(route2);
+      bool result2 = route1 == route2;
+      bool result3 = route1 != route2;
+
+      // Assert.
+      Assert.True(result1);
+      Assert.True(result2);
+      Assert.False(result3);
+    }
+
+    [Test]
+    public void Equals_GivenSameNameAndDifferentGrade_ShouldReturnFalse()
+    {
+      // Arrange.
+      Route route1 = Route.Create("RouteName (19)");
+      Route route2 = Route.Create("RouteName (10)");
+
+      // Act.
+      bool result1 = route1.Equals(route2);
+      bool result2 = route1 == route2;
+      bool result3 = route1 != route2;
+
+      // Assert.
+      Assert.False(result1);
+      Assert.False(result2);
+      Assert.True(result3);
+    }
   }
 }

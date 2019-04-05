@@ -2,7 +2,7 @@
 
 namespace Mcsa100Scoreboard.Domain
 {
-  public class Route
+  public class Route : IEquatable<Route>
   {
     public const int NoGrade = 0;
 
@@ -80,6 +80,64 @@ namespace Mcsa100Scoreboard.Domain
       Name = name ?? throw new ArgumentNullException(nameof(name));
       Grade = grade;
       GradeFriendly = gradeFriendly ?? throw new ArgumentNullException(nameof(gradeFriendly));
+    }
+
+    // IEquatable ---------------------------------------------------------------------------------
+
+    public bool Equals(Route other)
+    {
+      if (ReferenceEquals(null, other))
+      {
+        return false;
+      }
+
+      if (ReferenceEquals(this, other))
+      {
+        return true;
+      }
+
+      return string.Equals(
+               Name,
+               other.Name,
+               StringComparison.OrdinalIgnoreCase) && Grade == other.Grade;
+    }
+
+    public override bool Equals(object obj)
+    {
+      if (ReferenceEquals(null, obj))
+      {
+        return false;
+      }
+
+      if (ReferenceEquals(this, obj))
+      {
+        return true;
+      }
+
+      if (obj.GetType() != this.GetType())
+      {
+        return false;
+      }
+
+      return Equals((Route)obj);
+    }
+
+    public override int GetHashCode()
+    {
+      unchecked
+      {
+        return ((Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(Name) : 0) * 397) ^ Grade;
+      }
+    }
+
+    public static bool operator ==(Route left, Route right)
+    {
+      return Equals(left, right);
+    }
+
+    public static bool operator !=(Route left, Route right)
+    {
+      return !Equals(left, right);
     }
   }
 }
