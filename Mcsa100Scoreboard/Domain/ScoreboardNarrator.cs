@@ -76,7 +76,7 @@ namespace Mcsa100Scoreboard.Domain
         }
         else
         {
-          _narrativeBuilder.AppendLine($"{climberName} added '{newRoutes.First()}' and {numberOfNewRoutes - 1} other climbs.");
+          _narrativeBuilder.AppendLine($"{climberName} added '{newRoutes.First()}' and {numberOfNewRoutes - 1} other climb(s).");
         }
       }
     }

@@ -68,6 +68,65 @@ namespace Tests.Domain
     }
 
     [Test]
+    public void Narrative_GivenClimberAddedSeveralClimbs_ShouldListFirstClimbAndCountForOthers()
+    {
+      // Arrange.
+      var route1 = Route.Create("Route1");
+      var route2 = Route.Create("Route2");
+      var route3 = Route.Create("Route3");
+
+      var climberInstance1 = Substitute.For<IClimberAnalysis>();
+      var climberInstance2 = Substitute.For<IClimberAnalysis>();
+
+      climberInstance1
+        .Climber
+        .Name
+        .Returns("ClimberName");
+
+      climberInstance2
+        .Climber
+        .Name
+        .Returns("ClimberName");
+
+      climberInstance1
+        .Climber
+        .Routes
+        .Returns(new[] { route1 });
+
+      climberInstance2
+        .Climber
+        .Routes
+        .Returns(new[] { route1, route2, route3 });
+
+      climberInstance1
+        .Climber
+        .RouteCount
+        .Returns(1);
+
+      climberInstance1
+        .Climber
+        .RouteCount
+        .Returns(3);
+
+      var oldScoreboard = Substitute.For<IScoreboard>();
+      var newScoreboard = Substitute.For<IScoreboard>();
+
+      oldScoreboard
+        .AnalysedClimbersInRankOrder
+        .Returns(new[] { climberInstance1 });
+
+      newScoreboard
+        .AnalysedClimbersInRankOrder
+        .Returns(new[] { climberInstance2 });
+
+      // Act.
+      var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
+
+      // Assert.
+      StringAssert.Contains("ClimberName added 'Route2' and 1 other climb(s).", testObject.Narrative);
+    }
+
+    [Test]
     public void Narrative_GivenNewClimber_ShouldReportClimberJoined()
     {
       // Arrange.
