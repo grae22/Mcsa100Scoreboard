@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
 namespace Mcsa100Scoreboard.Services
 {
-  internal class GoogleSheetsService : IGoogleSheetService
+  internal class WebRequestService : IWebRequestService
   {
     public async Task<T> RetrieveInput<T>(Uri address)
     {
@@ -43,9 +44,11 @@ namespace Mcsa100Scoreboard.Services
       throw new Exception("Data retrieval failed");
     }
 
-    public async Task<bool> Write(Uri address, string content)
+    public async Task<bool> WriteJson(Uri address, string content)
     {
       var httpContent = new StringContent(content);
+
+      httpContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
       const int maxAttempts = 5;
 
