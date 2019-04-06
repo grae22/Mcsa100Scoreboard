@@ -19,23 +19,23 @@ namespace Mcsa100Scoreboard.Pages
     private const string GoogleSheetsBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
 
     private readonly IGoogleSheetService _googleSheetService;
-    private readonly string _googleSheetId;
-    private readonly string _delayedBackupGoogleSheetId;
     private readonly string _googleApiKey;
+    private readonly string _googleSheetId;
+    private readonly string _delayedBackupUrl;
 
     public IndexModel(IGoogleSheetService googleSheetService)
     {
       _googleSheetService = googleSheetService ?? throw new ArgumentNullException(nameof(googleSheetService));
 
-      _googleSheetId = Environment.GetEnvironmentVariable("GoogleSheetId") ?? throw new Exception("Sheet Id not found.");
-      _delayedBackupGoogleSheetId = Environment.GetEnvironmentVariable("DelayedBackupGoogleSheetId") ?? throw new Exception("Delayed Backup Sheet Id not found.");
-      _googleApiKey = Environment.GetEnvironmentVariable("GoogleApiKey") ?? throw new Exception("Api Key not found.");
+      _googleApiKey = Environment.GetEnvironmentVariable(EnvironmentVariables.GoogleApiKeyVarName) ?? throw new Exception("Api Key env-var not found.");
+      _googleSheetId = Environment.GetEnvironmentVariable(EnvironmentVariables.GoogleSheetIdKeyVarName) ?? throw new Exception("Sheet Id env-var not found.");
+      _delayedBackupUrl = Environment.GetEnvironmentVariable(EnvironmentVariables.DelayedBackupUrlVarName) ?? throw new Exception("Delayed Backup URL env-var not found.");
     }
 
     public async Task OnGet()
     {
       var address = new Uri($"{GoogleSheetsBaseUrl}{_googleSheetId}/values/Sheet1!A1:Z500?key={_googleApiKey}");
-      var delayedBackupAddress = new Uri($"{GoogleSheetsBaseUrl}{_delayedBackupGoogleSheetId}/values/Sheet1!A1:Z500?key={_googleApiKey}");
+      var delayedBackupAddress = new Uri($"{GoogleSheetsBaseUrl}{_delayedBackupUrl}/values/Sheet1!A1:Z500?key={_googleApiKey}");
 
       InputModel input = null;
       InputModel delayedBackupInput = null;
@@ -43,15 +43,14 @@ namespace Mcsa100Scoreboard.Pages
       try
       {
         input = await _googleSheetService.RetrieveInput<InputModel>(address);
-        delayedBackupInput = await _googleSheetService.RetrieveInput<InputModel>(delayedBackupAddress);
+        //delayedBackupInput = await _googleSheetService.RetrieveInput<InputModel>(delayedBackupAddress);
       }
       catch (Exception)
       {
         // Yep.
       }
 
-      if (input == null ||
-          delayedBackupInput == null)
+      if (input == null)
       {
         Scoreboard = new Scoreboard(null);
         Narrator = new ScoreboardNarrator(null, null);
@@ -59,10 +58,16 @@ namespace Mcsa100Scoreboard.Pages
       }
 
       var parsedInput = new InputParser(input);
-      var delayedBackupParsedInput = new InputParser(delayedBackupInput);
 
       Scoreboard = new Scoreboard(parsedInput.Climbers);
 
+      if (delayedBackupInput == null)
+      {
+        Narrator = new ScoreboardNarrator(null, null);
+        return;
+      }
+
+      var delayedBackupParsedInput = new InputParser(delayedBackupInput);
       var oldScoreboard = new Scoreboard(delayedBackupParsedInput.Climbers);
       Narrator = new ScoreboardNarrator(oldScoreboard, Scoreboard);
 
@@ -74,7 +79,7 @@ namespace Mcsa100Scoreboard.Pages
       InputModel input,
       InputModel delayedBackupInput)
     {
-      var delayedBackupAddress = new Uri($"{GoogleSheetsBaseUrl}{_delayedBackupGoogleSheetId}/values/Sheet2!A1:Z500?valueInputOption=USER_ENTERED?key={_googleApiKey}");
+      var delayedBackupAddress = new Uri($"{GoogleSheetsBaseUrl}{_delayedBackupUrl}/values/Sheet2!A1:Z500?valueInputOption=USER_ENTERED?key={_googleApiKey}");
 
       if (!DateTime.TryParse(delayedBackupInput.values[0][0], out DateTime currentBackupTimestamp))
       {
