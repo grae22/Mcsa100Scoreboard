@@ -68,7 +68,7 @@ namespace Mcsa100Scoreboard.Domain
           climberAtTime2
             .Routes
             .Where(r => !climberAtTime1.Routes.Contains(r))
-            .Select(r => r.Name);
+            .Select(r => r.NameAndGrade);
 
         newRouteNamesByClimber.Add(climberAtTime1.Name, newRoutes);
       }

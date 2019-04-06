@@ -71,6 +71,7 @@ namespace Mcsa100Scoreboard.Domain
     public int Grade { get; }
     public string GradeFriendly { get; }
     public bool HasGrade => Grade != NoGrade;
+    public string NameAndGrade => $"{Name} {GradeFriendly}".TrimEnd();
 
     private Route(
       in string name,

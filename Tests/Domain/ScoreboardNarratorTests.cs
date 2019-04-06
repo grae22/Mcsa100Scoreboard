@@ -15,8 +15,8 @@ namespace Tests.Domain
     public void Narrative_GivenClimberAddedClimb_ShouldListNewClimb()
     {
       // Arrange.
-      var route1 = Route.Create("Route1");
-      var route2 = Route.Create("Route2");
+      var route1 = Route.Create("Route1 (19)");
+      var route2 = Route.Create("Route2 (22)");
 
       var climberInstance1 = Substitute.For<IClimberAnalysis>();
       var climberInstance2 = Substitute.For<IClimberAnalysis>();
@@ -66,7 +66,7 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName added 'Route2'", StripHtmlTags(testObject.Narrative));
+      StringAssert.Contains("ClimberName added 'Route2 (22)'", StripHtmlTags(testObject.Narrative));
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Tests.Domain
     {
       // Arrange.
       var route1 = Route.Create("Route1");
-      var route2 = Route.Create("Route2");
+      var route2 = Route.Create("Route2 (F1)");
       var route3 = Route.Create("Route3");
 
       var climberInstance1 = Substitute.For<IClimberAnalysis>();
@@ -125,7 +125,7 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName added 'Route2' and 1 other climb(s)", StripHtmlTags(testObject.Narrative));
+      StringAssert.Contains("ClimberName added 'Route2 (F1)' and 1 other climb(s)", StripHtmlTags(testObject.Narrative));
     }
 
     [Test]

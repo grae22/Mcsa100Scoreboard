@@ -17,6 +17,7 @@ namespace Tests.Domain
       // Assert.
       Assert.NotNull(route);
       Assert.AreEqual("RouteName", route.Name);
+      Assert.AreEqual("RouteName (?)", route.NameAndGrade);
       Assert.False(route.HasGrade);
     }
 
@@ -30,6 +31,7 @@ namespace Tests.Domain
       // Assert.
       Assert.NotNull(route);
       Assert.AreEqual("RouteName", route.Name);
+      Assert.AreEqual("RouteName (17)", route.NameAndGrade);
       Assert.AreEqual(17, route.Grade);
       Assert.True(route.HasGrade);
     }
@@ -44,6 +46,7 @@ namespace Tests.Domain
       // Assert.
       Assert.NotNull(route);
       Assert.AreEqual("RouteName", route.Name);
+      Assert.AreEqual("RouteName (17)", route.NameAndGrade);
       Assert.AreEqual(17, route.Grade);
       Assert.True(route.HasGrade);
     }
@@ -100,6 +103,7 @@ namespace Tests.Domain
       // Assert.
       Assert.NotNull(route);
       Assert.AreEqual("RouteName", route.Name);
+      Assert.AreEqual("RouteName (F1)", route.NameAndGrade);
       Assert.AreEqual(13, route.Grade);
       Assert.True(route.HasGrade);
     }
@@ -114,6 +118,7 @@ namespace Tests.Domain
       // Assert.
       Assert.NotNull(route);
       Assert.AreEqual("RouteName", route.Name);
+      Assert.AreEqual("RouteName (X)", route.NameAndGrade);
       Assert.False(route.HasGrade);
     }
 
