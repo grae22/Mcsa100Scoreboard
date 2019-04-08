@@ -7,8 +7,6 @@ using Mcsa100Scoreboard.Services;
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using Newtonsoft.Json;
-
 namespace Mcsa100Scoreboard.Pages
 {
   public class IndexModel : PageModel
@@ -18,32 +16,28 @@ namespace Mcsa100Scoreboard.Pages
 
     private const string GoogleSheetsBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
 
-    private readonly IWebRequestService _webRequestService;
-    private readonly string _googleApiKey;
-    private readonly string _googleSheetId;
-    private readonly string _delayedBackupUrl;
+    private readonly IWebRestService _liveDataSource;
+    private readonly IWebRestService _backupDataSource;
 
-    public IndexModel(IWebRequestService webRequestService)
+    public IndexModel()
     {
-      _webRequestService = webRequestService ?? throw new ArgumentNullException(nameof(webRequestService));
+      string googleApiKey = Environment.GetEnvironmentVariable(EnvironmentVariables.GoogleApiKeyVarName) ?? throw new Exception("Api Key env-var not found.");
+      string googleSheetId = Environment.GetEnvironmentVariable(EnvironmentVariables.GoogleSheetIdKeyVarName) ?? throw new Exception("Sheet Id env-var not found.");
+      string backupUrl = Environment.GetEnvironmentVariable(EnvironmentVariables.DataBackupUrlVarName) ?? throw new Exception("Data Backup URL env-var not found.");
 
-      _googleApiKey = Environment.GetEnvironmentVariable(EnvironmentVariables.GoogleApiKeyVarName) ?? throw new Exception("Api Key env-var not found.");
-      _googleSheetId = Environment.GetEnvironmentVariable(EnvironmentVariables.GoogleSheetIdKeyVarName) ?? throw new Exception("Sheet Id env-var not found.");
-      _delayedBackupUrl = Environment.GetEnvironmentVariable(EnvironmentVariables.DelayedBackupUrlVarName) ?? throw new Exception("Delayed Backup URL env-var not found.");
+      _liveDataSource = new WebRestService(new Uri($"{GoogleSheetsBaseUrl}{googleSheetId}/values/Sheet1!A1:Z500?key={googleApiKey}"));
+      _backupDataSource = new WebRestService(new Uri(backupUrl));
     }
 
     public async Task OnGet()
     {
-      var address = new Uri($"{GoogleSheetsBaseUrl}{_googleSheetId}/values/Sheet1!A1:Z500?key={_googleApiKey}");
-      var delayedBackupAddress = new Uri(_delayedBackupUrl);
-
       InputModel input = null;
       InputModel delayedBackupInput = null;
 
       try
       {
-        input = await _webRequestService.RetrieveInput<InputModel>(address);
-        delayedBackupInput = await _webRequestService.RetrieveInput<InputModel>(delayedBackupAddress);
+        input = await _liveDataSource.Get<InputModel>();
+        delayedBackupInput = await _backupDataSource.Get<InputModel>();
       }
       catch (Exception)
       {
@@ -64,7 +58,7 @@ namespace Mcsa100Scoreboard.Pages
       if (delayedBackupInput == null)
       {
         Narrator = new ScoreboardNarrator(null, null);
-        await UpdateDelayedBackup(input, null);
+        //await UpdateDelayedBackup(input, null);
         return;
       }
 
@@ -76,29 +70,29 @@ namespace Mcsa100Scoreboard.Pages
       //await UpdateDelayedBackup(input, delayedBackupInput);
     }
 
-    private async Task UpdateDelayedBackup(
-      InputModel input,
-      InputModel delayedBackupInput)
-    {
-      var delayedBackupAddress = new Uri(_delayedBackupUrl);
+    //private async Task UpdateDelayedBackup(
+    //  InputModel input,
+    //  InputModel delayedBackupInput)
+    //{
+    //  var delayedBackupAddress = new Uri(_delayedBackupUrl);
 
-      if (!DateTime.TryParse(delayedBackupInput?.values[0][0], out DateTime currentBackupTimestamp))
-      {
-        currentBackupTimestamp = DateTime.MinValue;
-      }
+    //  if (!DateTime.TryParse(delayedBackupInput?.values[0][0], out DateTime currentBackupTimestamp))
+    //  {
+    //    currentBackupTimestamp = DateTime.MinValue;
+    //  }
 
-      TimeSpan delta = DateTime.Now - currentBackupTimestamp;
+    //  TimeSpan delta = DateTime.Now - currentBackupTimestamp;
 
-      if (delta.TotalDays <= 7)
-      {
-        return;
-      }
+    //  if (delta.TotalDays <= 7)
+    //  {
+    //    return;
+    //  }
 
-      input.values[0][0] = $"{DateTime.Now:yyyy/MM/dd}";
+    //  input.values[0][0] = $"{DateTime.Now:yyyy/MM/dd}";
 
-      var result = await _webRequestService.WriteJson(
-        delayedBackupAddress,
-        JsonConvert.SerializeObject(input));
-    }
+    //  var result = await _webRequestService.WriteJson(
+    //    delayedBackupAddress,
+    //    JsonConvert.SerializeObject(input));
+    //}
   }
 }

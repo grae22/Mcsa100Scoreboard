@@ -4,6 +4,6 @@
   {
     public const string GoogleApiKeyVarName = "Mcsa100ClimbScoreboard_GoogleApiKey";
     public const string GoogleSheetIdKeyVarName = "Mcsa100ClimbScoreboard_GoogleSheetId";
-    public const string DelayedBackupUrlVarName = "Mcsa100ClimbScoreboard_DelayedBackupUrl";
+    public const string DataBackupUrlVarName = "Mcsa100ClimbScoreboard_DataBackupUrl";
   }
 }

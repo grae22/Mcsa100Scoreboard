@@ -7,9 +7,16 @@ using Newtonsoft.Json;
 
 namespace Mcsa100Scoreboard.Services
 {
-  internal class WebRequestService : IWebRequestService
+  internal class WebRestService : IWebRestService
   {
-    public async Task<T> RetrieveInput<T>(Uri address)
+    private Uri _address;
+
+    public WebRestService(Uri address)
+    {
+      _address = address ?? throw new ArgumentNullException(nameof(address));
+    }
+
+    public async Task<T> Get<T>()
     {
       const int maxAttempts = 5;
 
@@ -19,7 +26,7 @@ namespace Mcsa100Scoreboard.Services
         {
           using (var client = new HttpClient())
           {
-            using (var response = await client.GetAsync(address))
+            using (var response = await client.GetAsync(_address))
             {
               using (var content = response.Content)
               {
@@ -44,7 +51,7 @@ namespace Mcsa100Scoreboard.Services
       throw new Exception("Data retrieval failed");
     }
 
-    public async Task<bool> WriteJson(Uri address, string content)
+    public async Task<bool> Put(string content)
     {
       var httpContent = new StringContent(content);
 
@@ -58,7 +65,7 @@ namespace Mcsa100Scoreboard.Services
         {
           using (var client = new HttpClient())
           {
-            using (var response = await client.PutAsync(address, httpContent))
+            using (var response = await client.PutAsync(_address, httpContent))
             {
               return response.IsSuccessStatusCode;
             }

@@ -1,5 +1,3 @@
-using Mcsa100Scoreboard.Services;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +18,6 @@ namespace Mcsa100Scoreboard
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc();
-      services.AddTransient<IWebRequestService, WebRequestService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
