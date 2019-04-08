@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
@@ -22,8 +23,10 @@ namespace Mcsa100Scoreboard.Services.JsonBackup
     {
       var model = new JsonBackupData
       {
-        Timestamp = _timeService.Now,
-        Data = json
+        DataByTimestamp = new Dictionary<string, string>
+        {
+          { $"{_timeService.Now:yyyyMMdd}", json }
+        }
       };
 
       var allModels = new[]

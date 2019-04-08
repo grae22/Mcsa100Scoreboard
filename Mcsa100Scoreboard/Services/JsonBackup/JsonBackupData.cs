@@ -1,14 +1,9 @@
-﻿using System;
-
-using Newtonsoft.Json;
+﻿using System.Collections.Generic;
 
 namespace Mcsa100Scoreboard.Services.JsonBackup
 {
   internal class JsonBackupData
   {
-    [JsonConverter(typeof(JsonBackupDateSerialiser))]
-    public DateTime Timestamp { get; set; }
-
-    public string Data { get; set; }
+    public Dictionary<string, string> DataByTimestamp { get; set; }
   }
 }
