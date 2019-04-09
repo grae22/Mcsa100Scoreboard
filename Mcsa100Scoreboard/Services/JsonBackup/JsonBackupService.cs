@@ -11,7 +11,7 @@ namespace Mcsa100Scoreboard.Services.JsonBackup
 {
   internal class JsonBackupService
   {
-    private const string KeyDateFormat = "yyyyMMdd";
+    private const string KeyDateFormat = "yyyy-MM-dd";
 
     private readonly ITimeService _timeService;
     private readonly IWebRestService _webRestService;
@@ -80,11 +80,7 @@ namespace Mcsa100Scoreboard.Services.JsonBackup
           continue;
         }
 
-        string formattedKey = key
-          .Insert(6, "/")
-          .Insert(4, "/");
-
-        if (!DateTime.TryParse(formattedKey, out DateTime date))
+        if (!DateTime.TryParse(key, out DateTime date))
         {
           keysToRemove.Add(key);
           continue;

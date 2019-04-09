@@ -36,7 +36,7 @@ namespace Tests.Services.JsonBackup
       {
         DataByTimestamp = new Dictionary<string, string>
         {
-          { "20190408", "{}" }
+          { "2019-04-08", "{}" }
         }
       };
 
@@ -62,7 +62,7 @@ namespace Tests.Services.JsonBackup
           {
             DataByTimestamp = new Dictionary<string, string>
             {
-              { "20190407", "{}" }
+              { "2019-04-07", "{}" }
             }
           });
 
@@ -77,8 +77,8 @@ namespace Tests.Services.JsonBackup
       {
         DataByTimestamp = new Dictionary<string, string>
         {
-          { "20190407", "{}" },
-          { "20190408", "{}" }
+          { "2019-04-07", "{}" },
+          { "2019-04-08", "{}" }
         }
       };
 
@@ -104,7 +104,7 @@ namespace Tests.Services.JsonBackup
           {
             DataByTimestamp = new Dictionary<string, string>
             {
-              { "20190408", "{}" }
+              { "2019-04-08", "{}" }
             }
           });
 
@@ -119,7 +119,7 @@ namespace Tests.Services.JsonBackup
       {
         DataByTimestamp = new Dictionary<string, string>
         {
-          { "20190408", "{\"key\":\"value\"}" }
+          { "2019-04-08", "{\"key\":\"value\"}" }
         }
       };
 
@@ -145,7 +145,7 @@ namespace Tests.Services.JsonBackup
           {
             DataByTimestamp = new Dictionary<string, string>
             {
-              { "20190331", "{}" }
+              { "2019-03-31", "{}" }
             }
           });
 
@@ -160,7 +160,7 @@ namespace Tests.Services.JsonBackup
       {
         DataByTimestamp = new Dictionary<string, string>
         {
-          { "20190408", "{}" }
+          { "2019-04-08", "{}" }
         }
       };
 
