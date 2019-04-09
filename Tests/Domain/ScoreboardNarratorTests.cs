@@ -125,7 +125,7 @@ namespace Tests.Domain
       var testObject = new ScoreboardNarrator(oldScoreboard, newScoreboard);
 
       // Assert.
-      StringAssert.Contains("ClimberName added 'Route2 (F1)' and 1 other climb(s)", StripHtmlTags(testObject.Narrative));
+      StringAssert.Contains("ClimberName added 'Route3 (?)' and 1 other climb(s)", StripHtmlTags(testObject.Narrative));
     }
 
     [Test]

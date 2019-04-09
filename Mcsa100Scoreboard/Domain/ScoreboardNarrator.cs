@@ -117,11 +117,11 @@ namespace Mcsa100Scoreboard.Domain
 
         if (numberOfNewRoutes == 1)
         {
-          _narrativeBuilder.AppendLine($"<b>{climberName}</b> added '<b>{newRoutes.First()}</b>'");
+          _narrativeBuilder.AppendLine($"<b>{climberName}</b> added '<b>{newRoutes.Last()}</b>'");
         }
         else
         {
-          _narrativeBuilder.AppendLine($"<b>{climberName}</b> added '<b>{newRoutes.First()}</b>' and <b>{numberOfNewRoutes - 1}</b> other climb(s)");
+          _narrativeBuilder.AppendLine($"<b>{climberName}</b> added '<b>{newRoutes.Last()}</b>' and <b>{numberOfNewRoutes - 1}</b> other climb(s)");
         }
       }
     }
