@@ -32,14 +32,11 @@ namespace Tests.Services.JsonBackup
         .GetResult();
 
       // Assert.
-      var expected = new[]
+      var expected = new JsonBackupData
       {
-        new JsonBackupData
+        DataByTimestamp = new Dictionary<string, string>
         {
-          DataByTimestamp = new Dictionary<string, string>
-          {
-            { "20190408", "{}" }
-          }
+          { "20190408", "{}" }
         }
       };
 
@@ -58,6 +55,17 @@ namespace Tests.Services.JsonBackup
 
       timeService.Now.Returns(new DateTime(2019, 4, 8));
 
+      webRequestService
+        .Get<JsonBackupData>()
+        .Returns(
+          new JsonBackupData
+          {
+            DataByTimestamp = new Dictionary<string, string>
+            {
+              { "20190407", "{}" }
+            }
+          });
+
       // Act.
       testObject
         .Add("{}")
@@ -65,23 +73,59 @@ namespace Tests.Services.JsonBackup
         .GetResult();
 
       // Assert.
-      var expected = new[]
+      var expected = new JsonBackupData
       {
-        new JsonBackupData
+        DataByTimestamp = new Dictionary<string, string>
         {
-          DataByTimestamp = new Dictionary<string, string>
-          {
-            { "20190408", "{}" }
-          }
+          { "20190407", "{}" },
+          { "20190408", "{}" }
         }
       };
 
       webRequestService
         .Received(1)
         .Put(JsonConvert.SerializeObject(expected));
+    }
 
-      // Test is WIP.
-      Assert.Fail();
+    [Test]
+    public void Add_GivenExistingPriorBackupForSameDate_ShouldUpdateExisting()
+    {
+      // Arrange.
+      var timeService = Substitute.For<ITimeService>();
+      var webRequestService = Substitute.For<IWebRestService>();
+      var testObject = new JsonBackupService(timeService, webRequestService);
+
+      timeService.Now.Returns(new DateTime(2019, 4, 8));
+
+      webRequestService
+        .Get<JsonBackupData>()
+        .Returns(
+          new JsonBackupData
+          {
+            DataByTimestamp = new Dictionary<string, string>
+            {
+              { "20190408", "{}" }
+            }
+          });
+
+      // Act.
+      testObject
+        .Add("{\"key\":\"value\"}")
+        .GetAwaiter()
+        .GetResult();
+
+      // Assert.
+      var expected = new JsonBackupData
+      {
+        DataByTimestamp = new Dictionary<string, string>
+        {
+          { "20190408", "{\"key\":\"value\"}" }
+        }
+      };
+
+      webRequestService
+        .Received(1)
+        .Put(JsonConvert.SerializeObject(expected));
     }
   }
 }

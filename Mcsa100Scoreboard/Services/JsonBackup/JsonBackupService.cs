@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
@@ -8,6 +7,8 @@ namespace Mcsa100Scoreboard.Services.JsonBackup
 {
   internal class JsonBackupService
   {
+    private const string KeyDateFormat = "yyyyMMdd";
+
     private readonly ITimeService _timeService;
     private readonly IWebRestService _webRestService;
 
@@ -19,24 +20,36 @@ namespace Mcsa100Scoreboard.Services.JsonBackup
       _webRestService = webRestService ?? throw new ArgumentNullException(nameof(webRestService));
     }
 
-    public async Task Add(string json)
+    public async Task Add(string data)
     {
-      var model = new JsonBackupData
+      JsonBackupData backup = await RetrieveData();
+
+      string key = _timeService.Now.ToString(KeyDateFormat);
+
+      if (backup.DataByTimestamp.ContainsKey(key))
       {
-        DataByTimestamp = new Dictionary<string, string>
-        {
-          { $"{_timeService.Now:yyyyMMdd}", json }
-        }
-      };
-
-      var allModels = new[]
+        backup.DataByTimestamp[key] = data;
+      }
+      else
       {
-        model
-      };
+        backup.DataByTimestamp.Add(key, data);
+      }
 
-      string serialisedData = JsonConvert.SerializeObject(allModels);
+      string serialisedBackup = JsonConvert.SerializeObject(backup);
 
-      await _webRestService.Put(serialisedData);
+      await _webRestService.Put(serialisedBackup);
+    }
+
+    private async Task<JsonBackupData> RetrieveData()
+    {
+      var data = await _webRestService.Get<JsonBackupData>();
+
+      if (data == null)
+      {
+        data = new JsonBackupData();
+      }
+
+      return data;
     }
   }
 }
