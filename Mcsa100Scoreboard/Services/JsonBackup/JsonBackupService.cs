@@ -1,8 +1,6 @@
-﻿// TODO:
-// x Retrieve nearest backup to specified date.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
@@ -47,6 +45,22 @@ namespace Mcsa100Scoreboard.Services.JsonBackup
       string serialisedBackup = JsonConvert.SerializeObject(backup);
 
       await _webRestService.Put(serialisedBackup);
+    }
+
+    public async Task<string> GetOldest()
+    {
+      var data = await RetrieveData();
+
+      if (data.DataByTimestamp.Count == 0)
+      {
+        return null;
+      }
+
+      return data
+        .DataByTimestamp
+        .OrderBy(d => d.Key)
+        .First()
+        .Value;
     }
 
     private async Task<JsonBackupData> RetrieveData()

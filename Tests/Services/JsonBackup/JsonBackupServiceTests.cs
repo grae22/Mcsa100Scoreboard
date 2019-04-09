@@ -168,5 +168,58 @@ namespace Tests.Services.JsonBackup
         .Received(1)
         .Put(JsonConvert.SerializeObject(expected));
     }
+
+    [Test]
+    public void GetOldest_GivenExistingBackups_ShouldReturnTheOldest()
+    {
+      // Arrange.
+      var timeService = Substitute.For<ITimeService>();
+      var webRequestService = Substitute.For<IWebRestService>();
+      var testObject = new JsonBackupService(timeService, webRequestService, 0);
+
+      timeService.Now.Returns(new DateTime(2019, 4, 8));
+
+      webRequestService
+        .Get<JsonBackupData>()
+        .Returns(
+          new JsonBackupData
+          {
+            DataByTimestamp = new Dictionary<string, string>
+            {
+              { "2019-04-06", "{\"key1\": 123}" },
+              { "2019-04-02", "{\"key2\": 456}" },
+              { "2019-04-07", "{\"key3\": 789}" }
+            }
+          });
+
+      // Act.
+      string result = testObject
+        .GetOldest()
+        .GetAwaiter()
+        .GetResult();
+
+      // Assert.
+      Assert.AreEqual("{\"key2\": 456}", result);
+    }
+
+    [Test]
+    public void GetOldest_GivenNoBackups_ShouldReturnNull()
+    {
+      // Arrange.
+      var timeService = Substitute.For<ITimeService>();
+      var webRequestService = Substitute.For<IWebRestService>();
+      var testObject = new JsonBackupService(timeService, webRequestService, 0);
+
+      timeService.Now.Returns(new DateTime(2019, 4, 8));
+
+      // Act.
+      string result = testObject
+        .GetOldest()
+        .GetAwaiter()
+        .GetResult();
+
+      // Assert.
+      Assert.IsNull(result);
+    }
   }
 }
