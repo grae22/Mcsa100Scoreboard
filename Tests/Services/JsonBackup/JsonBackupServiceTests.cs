@@ -21,7 +21,7 @@ namespace Tests.Services.JsonBackup
       // Arrange.
       var timeService = Substitute.For<ITimeService>();
       var webRequestService = Substitute.For<IWebRestService>();
-      var testObject = new JsonBackupService(timeService, webRequestService);
+      var testObject = new JsonBackupService(timeService, webRequestService, 0);
 
       timeService.Now.Returns(new DateTime(2019, 4, 8));
 
@@ -51,7 +51,7 @@ namespace Tests.Services.JsonBackup
       // Arrange.
       var timeService = Substitute.For<ITimeService>();
       var webRequestService = Substitute.For<IWebRestService>();
-      var testObject = new JsonBackupService(timeService, webRequestService);
+      var testObject = new JsonBackupService(timeService, webRequestService, 0);
 
       timeService.Now.Returns(new DateTime(2019, 4, 8));
 
@@ -93,7 +93,7 @@ namespace Tests.Services.JsonBackup
       // Arrange.
       var timeService = Substitute.For<ITimeService>();
       var webRequestService = Substitute.For<IWebRestService>();
-      var testObject = new JsonBackupService(timeService, webRequestService);
+      var testObject = new JsonBackupService(timeService, webRequestService, 0);
 
       timeService.Now.Returns(new DateTime(2019, 4, 8));
 
@@ -120,6 +120,47 @@ namespace Tests.Services.JsonBackup
         DataByTimestamp = new Dictionary<string, string>
         {
           { "20190408", "{\"key\":\"value\"}" }
+        }
+      };
+
+      webRequestService
+        .Received(1)
+        .Put(JsonConvert.SerializeObject(expected));
+    }
+
+    [Test]
+    public void Add_GivenOldPriorBackup_ShouldRemoveTheOldBackup()
+    {
+      // Arrange.
+      var timeService = Substitute.For<ITimeService>();
+      var webRequestService = Substitute.For<IWebRestService>();
+      var testObject = new JsonBackupService(timeService, webRequestService, 7);
+
+      timeService.Now.Returns(new DateTime(2019, 4, 8));
+
+      webRequestService
+        .Get<JsonBackupData>()
+        .Returns(
+          new JsonBackupData
+          {
+            DataByTimestamp = new Dictionary<string, string>
+            {
+              { "20190331", "{}" }
+            }
+          });
+
+      // Act.
+      testObject
+        .Add("{}")
+        .GetAwaiter()
+        .GetResult();
+
+      // Assert.
+      var expected = new JsonBackupData
+      {
+        DataByTimestamp = new Dictionary<string, string>
+        {
+          { "20190408", "{}" }
         }
       };
 
