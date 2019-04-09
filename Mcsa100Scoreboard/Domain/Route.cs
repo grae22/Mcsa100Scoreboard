@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Mcsa100Scoreboard.Domain
 {
@@ -32,28 +35,30 @@ namespace Mcsa100Scoreboard.Domain
         return;
       }
 
-      int openingBraceIndex = nameAndGrade.IndexOf('(');
-      int closingBraceIndex = nameAndGrade.IndexOf(')');
+      string nameAndBracketedGrade = EncloseGradeInBrackets(nameAndGrade);
+
+      int openingBraceIndex = nameAndBracketedGrade.IndexOf('(');
+      int closingBraceIndex = nameAndBracketedGrade.IndexOf(')');
 
       if (openingBraceIndex < 0 ||
           closingBraceIndex < 0 ||
           closingBraceIndex < openingBraceIndex)
       {
-        name = nameAndGrade.Trim();
+        name = nameAndBracketedGrade.Trim();
         return;
       }
 
-      name = nameAndGrade
+      name = nameAndBracketedGrade
         .Remove(openingBraceIndex, closingBraceIndex - openingBraceIndex + 1)
         .Replace("  ", " ")
         .Trim();
 
       if (string.IsNullOrWhiteSpace(name))
       {
-        name = nameAndGrade;
+        name = nameAndBracketedGrade;
       }
 
-      string gradeText = nameAndGrade.Substring(openingBraceIndex + 1, closingBraceIndex - openingBraceIndex - 1);
+      string gradeText = nameAndBracketedGrade.Substring(openingBraceIndex + 1, closingBraceIndex - openingBraceIndex - 1);
 
       bool gradeParsedOk = int.TryParse(gradeText, out grade);
 
@@ -65,6 +70,28 @@ namespace Mcsa100Scoreboard.Domain
       }
 
       gradeFriendly = $"({gradeText})";
+    }
+
+    private static string EncloseGradeInBrackets(in string nameAndGrade)
+    {
+      if (nameAndGrade.Contains("("))
+      {
+        return nameAndGrade;
+      }
+
+      string[] nameSegments = nameAndGrade.Trim().Split(" ");
+
+      string lastSegment = nameSegments.Length > 0 ? nameSegments.Last().Trim() : null;
+
+      if (lastSegment != null &&
+          GradeConverter.IsValidGrade(lastSegment))
+      {
+        nameSegments[nameSegments.Length - 1] = $"({lastSegment})";
+
+        return nameSegments.Join(" ");
+      }
+
+      return nameAndGrade;
     }
 
     public string Name { get; }

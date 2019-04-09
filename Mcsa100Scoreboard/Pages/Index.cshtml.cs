@@ -4,8 +4,11 @@ using System.Threading.Tasks;
 using Mcsa100Scoreboard.Domain;
 using Mcsa100Scoreboard.Models;
 using Mcsa100Scoreboard.Services;
+using Mcsa100Scoreboard.Services.JsonBackup;
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
+using Newtonsoft.Json;
 
 namespace Mcsa100Scoreboard.Pages
 {
@@ -17,7 +20,7 @@ namespace Mcsa100Scoreboard.Pages
     private const string GoogleSheetsBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
 
     private readonly IWebRestService _liveDataSource;
-    private readonly IWebRestService _backupDataSource;
+    private readonly JsonBackupService _backupService;
 
     public IndexModel()
     {
@@ -26,18 +29,27 @@ namespace Mcsa100Scoreboard.Pages
       string backupUrl = Environment.GetEnvironmentVariable(EnvironmentVariables.DataBackupUrlVarName) ?? throw new Exception("Data Backup URL env-var not found.");
 
       _liveDataSource = new WebRestService(new Uri($"{GoogleSheetsBaseUrl}{googleSheetId}/values/Sheet1!A1:Z500?key={googleApiKey}"));
-      _backupDataSource = new WebRestService(new Uri(backupUrl));
+
+      var backupWebService = new WebRestService(new Uri(backupUrl));
+
+      _backupService = new JsonBackupService(
+        new TimeService(),
+        backupWebService,
+        7);
     }
 
     public async Task OnGet()
     {
       InputModel input = null;
-      InputModel delayedBackupInput = null;
+      InputModel backupInput = null;
 
       try
       {
         input = await _liveDataSource.Get<InputModel>();
-        delayedBackupInput = await _backupDataSource.Get<InputModel>();
+
+        string backupDataSerialised = await _backupService.GetOldest();
+
+        backupInput = JsonConvert.DeserializeObject<InputModel>(backupDataSerialised);
       }
       catch (Exception)
       {
@@ -55,44 +67,18 @@ namespace Mcsa100Scoreboard.Pages
 
       Scoreboard = new Scoreboard(parsedInput.Climbers);
 
-      if (delayedBackupInput == null)
+      if (backupInput == null)
       {
         Narrator = new ScoreboardNarrator(null, null);
-        //await UpdateDelayedBackup(input, null);
+        await _backupService.Add(JsonConvert.SerializeObject(input));
         return;
       }
 
-      var delayedBackupParsedInput = new InputParser(delayedBackupInput);
-      var oldScoreboard = new Scoreboard(delayedBackupParsedInput.Climbers);
+      var backupParsedInput = new InputParser(backupInput);
+      var oldScoreboard = new Scoreboard(backupParsedInput.Climbers);
       Narrator = new ScoreboardNarrator(oldScoreboard, Scoreboard);
 
-      // TODO
-      //await UpdateDelayedBackup(input, delayedBackupInput);
+      await _backupService.Add(JsonConvert.SerializeObject(input));
     }
-
-    //private async Task UpdateDelayedBackup(
-    //  InputModel input,
-    //  InputModel delayedBackupInput)
-    //{
-    //  var delayedBackupAddress = new Uri(_delayedBackupUrl);
-
-    //  if (!DateTime.TryParse(delayedBackupInput?.values[0][0], out DateTime currentBackupTimestamp))
-    //  {
-    //    currentBackupTimestamp = DateTime.MinValue;
-    //  }
-
-    //  TimeSpan delta = DateTime.Now - currentBackupTimestamp;
-
-    //  if (delta.TotalDays <= 7)
-    //  {
-    //    return;
-    //  }
-
-    //  input.values[0][0] = $"{DateTime.Now:yyyy/MM/dd}";
-
-    //  var result = await _webRequestService.WriteJson(
-    //    delayedBackupAddress,
-    //    JsonConvert.SerializeObject(input));
-    //}
   }
 }

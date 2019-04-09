@@ -38,5 +38,15 @@ namespace Mcsa100Scoreboard.Domain
 
       return _saSportByOldSaGrades[oldSaGrade];
     }
+
+    public static bool IsValidGrade(in string gradeText)
+    {
+      if (int.TryParse(gradeText, out int grade))
+      {
+        return true;
+      }
+
+      return _saSportByOldSaGrades.ContainsKey(gradeText);
+    }
   }
 }
