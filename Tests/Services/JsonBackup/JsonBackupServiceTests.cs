@@ -129,6 +129,39 @@ namespace Tests.Services.JsonBackup
     }
 
     [Test]
+    public void Add_GivenSameData_ShouldNotMakeExternalCall()
+    {
+      // Arrange.
+      var timeService = Substitute.For<ITimeService>();
+      var webRequestService = Substitute.For<IWebRestService>();
+      var testObject = new JsonBackupService(timeService, webRequestService, 0);
+
+      timeService.Now.Returns(new DateTime(2019, 4, 8));
+
+      webRequestService
+        .Get<JsonBackupData>()
+        .Returns(
+          new JsonBackupData
+          {
+            DataByTimestamp = new Dictionary<string, string>
+            {
+              { "2019-04-08", "{}" }
+            }
+          });
+
+      // Act.
+      testObject
+        .Add("{}")
+        .GetAwaiter()
+        .GetResult();
+
+      // Assert.
+      webRequestService
+        .Received(0)
+        .Put(Arg.Any<string>());
+    }
+
+    [Test]
     public void Add_GivenOldPriorBackup_ShouldRemoveTheOldBackup()
     {
       // Arrange.

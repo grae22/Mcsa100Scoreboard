@@ -33,6 +33,11 @@ namespace Mcsa100Scoreboard.Services.JsonBackup
 
       if (backup.DataByTimestamp.ContainsKey(key))
       {
+        if (backup.DataByTimestamp[key].Equals(data))
+        {
+          return;
+        }
+
         backup.DataByTimestamp[key] = data;
       }
       else
