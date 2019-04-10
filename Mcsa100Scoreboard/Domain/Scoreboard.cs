@@ -22,7 +22,7 @@ namespace Mcsa100Scoreboard.Domain
       {
         IClimber climber = pair.Key;
         int rank = pair.Value;
-        var analysis = new ClimberAnalysis(climber, rank, climbers);
+        var analysis = new ClimberAnalysis(climber, rank, null, climbers);
         analysedClimbers.Add(analysis);
       }
 

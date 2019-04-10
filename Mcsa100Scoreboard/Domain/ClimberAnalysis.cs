@@ -8,6 +8,7 @@ namespace Mcsa100Scoreboard.Domain
   {
     public IClimber Climber { get; }
     public int Rank { get; }
+    public int RankDelta { get; }
     public int? HighestGradeClimbed { get; private set; }
     public int? LowestGradeClimbed { get; private set; }
     public int? AverageGradeClimbed { get; private set; }
@@ -17,6 +18,7 @@ namespace Mcsa100Scoreboard.Domain
     public ClimberAnalysis(
       in IClimber climber,
       in int rank,
+      in int? previousRank,
       in IEnumerable<IClimber> allClimbers)
     {
       if (climber == null)
@@ -31,6 +33,11 @@ namespace Mcsa100Scoreboard.Domain
 
       Climber = climber;
       Rank = rank;
+
+      if (previousRank.HasValue)
+      {
+        RankDelta = previousRank.Value - rank;
+      }
 
       AnalyseGradedClimbs(allClimbers);
     }

@@ -25,7 +25,7 @@ namespace Tests.Domain
           Route.Create("Route3 (20)")
         });
 
-      var testObject = new ClimberAnalysis(climber, 1, new[] { climber });
+      var testObject = new ClimberAnalysis(climber, 1, null, new[] { climber });
 
       // Act.
       int? result = testObject.HighestGradeClimbed;
@@ -49,7 +49,7 @@ namespace Tests.Domain
           Route.Create("Route3")
         });
 
-      var testObject = new ClimberAnalysis(climber, 1, new[] { climber });
+      var testObject = new ClimberAnalysis(climber, 1, null, new[] { climber });
 
       // Act.
       int? result = testObject.HighestGradeClimbed;
@@ -66,7 +66,7 @@ namespace Tests.Domain
 
       climber.Routes.Returns(new List<Route>());
 
-      var testObject = new ClimberAnalysis(climber, 1, new[] { climber });
+      var testObject = new ClimberAnalysis(climber, 1, null, new[] { climber });
 
       // Act.
       int? result = testObject.HighestGradeClimbed;
@@ -90,7 +90,7 @@ namespace Tests.Domain
           Route.Create("Route3 (20)")
         });
 
-      var testObject = new ClimberAnalysis(climber, 1, new[] { climber });
+      var testObject = new ClimberAnalysis(climber, 1, null, new[] { climber });
 
       // Act.
       int? result = testObject.LowestGradeClimbed;
@@ -114,7 +114,7 @@ namespace Tests.Domain
           Route.Create("Route3")
         });
 
-      var testObject = new ClimberAnalysis(climber, 1, new[] { climber });
+      var testObject = new ClimberAnalysis(climber, 1, null, new[] { climber });
 
       // Act.
       int? result = testObject.LowestGradeClimbed;
@@ -131,7 +131,7 @@ namespace Tests.Domain
 
       climber.Routes.Returns(new List<Route>());
 
-      var testObject = new ClimberAnalysis(climber, 1, new[] { climber });
+      var testObject = new ClimberAnalysis(climber, 1, null, new[] { climber });
 
       // Act.
       int? result = testObject.LowestGradeClimbed;
@@ -154,7 +154,7 @@ namespace Tests.Domain
           Route.Create("Route2 (20)"),
         });
 
-      var testObject = new ClimberAnalysis(climber, 1, new[] { climber });
+      var testObject = new ClimberAnalysis(climber, 1, null, new[] { climber });
 
       // Act.
       int? result = testObject.AverageGradeClimbed;
@@ -178,7 +178,7 @@ namespace Tests.Domain
           Route.Create("Route3")
         });
 
-      var testObject = new ClimberAnalysis(climber, 1, new[] { climber });
+      var testObject = new ClimberAnalysis(climber, 1, null, new[] { climber });
 
       // Act.
       int? result = testObject.AverageGradeClimbed;
@@ -195,7 +195,7 @@ namespace Tests.Domain
 
       climber.Routes.Returns(new List<Route>());
 
-      var testObject = new ClimberAnalysis(climber, 1, new[] { climber });
+      var testObject = new ClimberAnalysis(climber, 1, null, new[] { climber });
 
       // Act.
       int? result = testObject.AverageGradeClimbed;
@@ -247,10 +247,10 @@ namespace Tests.Domain
       };
 
       // Act.
-      var climber1Analysis = new ClimberAnalysis(climber1, 1, climbers);
-      var climber2Analysis = new ClimberAnalysis(climber2, 1, climbers);
-      var climber3Analysis = new ClimberAnalysis(climber3, 1, climbers);
-      var climber4Analysis = new ClimberAnalysis(climber4, 1, climbers);
+      var climber1Analysis = new ClimberAnalysis(climber1, 1, null, climbers);
+      var climber2Analysis = new ClimberAnalysis(climber2, 1, null, climbers);
+      var climber3Analysis = new ClimberAnalysis(climber3, 1, null, climbers);
+      var climber4Analysis = new ClimberAnalysis(climber4, 1, null, climbers);
 
       // Assert.
       Assert.True(climber1Analysis.HasHighestGradedClimb);
@@ -298,16 +298,84 @@ namespace Tests.Domain
       };
 
       // Act.
-      var climber1Analysis = new ClimberAnalysis(climber1, 1, climbers);
-      var climber2Analysis = new ClimberAnalysis(climber2, 1, climbers);
-      var climber3Analysis = new ClimberAnalysis(climber3, 1, climbers);
-      var climber4Analysis = new ClimberAnalysis(climber4, 1, climbers);
+      var climber1Analysis = new ClimberAnalysis(climber1, 1, null, climbers);
+      var climber2Analysis = new ClimberAnalysis(climber2, 1, null, climbers);
+      var climber3Analysis = new ClimberAnalysis(climber3, 1, null, climbers);
+      var climber4Analysis = new ClimberAnalysis(climber4, 1, null, climbers);
 
       // Assert.
       Assert.True(climber1Analysis.HasHighestAverageGrade);
       Assert.True(climber2Analysis.HasHighestAverageGrade);
       Assert.False(climber3Analysis.HasHighestAverageGrade);
       Assert.False(climber4Analysis.HasHighestAverageGrade);
+    }
+
+    [Test]
+    public void RankDelta_GivenGainedARank_ShouldReturnPositiveOne()
+    {
+      // Arrange.
+      var climber = Substitute.For<IClimber>();
+
+      // Act.
+      var testObject = new ClimberAnalysis(
+        climber,
+        1,
+        2,
+        new IClimber[0]);
+
+      // Assert.
+      Assert.AreEqual(1, testObject.RankDelta);
+    }
+
+    [Test]
+    public void RankDelta_GivenDroppedARank_ShouldReturnNegativeOne()
+    {
+      // Arrange.
+      var climber = Substitute.For<IClimber>();
+
+      // Act.
+      var testObject = new ClimberAnalysis(
+        climber,
+        2,
+        1,
+        new IClimber[0]);
+
+      // Assert.
+      Assert.AreEqual(-1, testObject.RankDelta);
+    }
+
+    [Test]
+    public void RankDelta_GivenNoPriorRank_ShouldReturnZero()
+    {
+      // Arrange.
+      var climber = Substitute.For<IClimber>();
+
+      // Act.
+      var testObject = new ClimberAnalysis(
+        climber,
+        2,
+        null,
+        new IClimber[0]);
+
+      // Assert.
+      Assert.AreEqual(0, testObject.RankDelta);
+    }
+
+    [Test]
+    public void RankDelta_GivenNoRankChange_ShouldReturnZero()
+    {
+      // Arrange.
+      var climber = Substitute.For<IClimber>();
+
+      // Act.
+      var testObject = new ClimberAnalysis(
+        climber,
+        2,
+        2,
+        new IClimber[0]);
+
+      // Assert.
+      Assert.AreEqual(0, testObject.RankDelta);
     }
   }
 }
