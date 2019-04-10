@@ -52,7 +52,7 @@
             string name = climber.Climber.Name;
             int routeCount = climber.Climber.RouteCount;
             string rankDeltaColour = "black";
-            string toWin = (rank > 1 ? $"{bestRouteCount - routeCount}" : "-");
+            string toWin = (rank > 1 ? $"{bestRouteCount - routeCount + 1}" : "-");
             string averageGradeFontSize = climber.HasHighestAverageGrade ? "normal" : "smaller";
             string highestGradeFontSize = climber.HasHighestGradedClimb ? "normal" : "smaller";
             string averageGradeFontWeight = climber.HasHighestAverageGrade ? "bold" : "normal";
