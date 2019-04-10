@@ -7,7 +7,9 @@ namespace Mcsa100Scoreboard.Domain
   {
     public IClimberAnalysis[] AnalysedClimbersInRankOrder { get; }
 
-    public Scoreboard(in IEnumerable<IClimber> climbers)
+    public Scoreboard(
+      in IEnumerable<IClimber> climbers,
+      in IEnumerable<IClimberAnalysis> priorAnalyses)
     {
       if (climbers == null)
       {
@@ -22,8 +24,18 @@ namespace Mcsa100Scoreboard.Domain
       {
         IClimber climber = pair.Key;
         int rank = pair.Value;
-        var analysis = new ClimberAnalysis(climber, rank, null, climbers);
-        analysedClimbers.Add(analysis);
+
+        int? priorRank =
+          priorAnalyses
+            ?.FirstOrDefault(a => a.Climber.Name == climber.Name)
+            ?.Rank;
+
+        analysedClimbers.Add(
+          new ClimberAnalysis(
+            climber,
+            rank,
+            priorRank,
+            climbers));
       }
 
       var sortedAnalysedClimbers =

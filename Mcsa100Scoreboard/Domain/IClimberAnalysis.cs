@@ -4,6 +4,7 @@
   {
     IClimber Climber { get; }
     int Rank { get; }
+    int RankDelta { get; }
     int? HighestGradeClimbed { get; }
     int? LowestGradeClimbed { get; }
     int? AverageGradeClimbed { get; }

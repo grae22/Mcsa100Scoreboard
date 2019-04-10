@@ -45,8 +45,14 @@ namespace Mcsa100Scoreboard.Pages
 
       try
       {
-        input = await _liveDataSource.Get<InputModel>();
-
+        input = await _liveDataSource
+          .Get<InputModel>()
+          .ConfigureAwait(false);
+#if !DEBUG
+        await _backupService
+          .Add(JsonConvert.SerializeObject(input))
+          .ConfigureAwait(false);
+#endif
         string backupDataSerialised = await _backupService.GetOldest();
 
         backupInput = JsonConvert.DeserializeObject<InputModel>(backupDataSerialised);
@@ -58,27 +64,24 @@ namespace Mcsa100Scoreboard.Pages
 
       if (input == null)
       {
-        Scoreboard = new Scoreboard(null);
+        Scoreboard = new Scoreboard(null, null);
+        Narrator = new ScoreboardNarrator(null, null);
+        return;
+      }
+
+      if (backupInput == null)
+      {
         Narrator = new ScoreboardNarrator(null, null);
         return;
       }
 
       var parsedInput = new InputParser(input);
-
-      Scoreboard = new Scoreboard(parsedInput.Climbers);
-
-      if (backupInput == null)
-      {
-        Narrator = new ScoreboardNarrator(null, null);
-        await _backupService.Add(JsonConvert.SerializeObject(input));
-        return;
-      }
-
       var backupParsedInput = new InputParser(backupInput);
-      var oldScoreboard = new Scoreboard(backupParsedInput.Climbers);
-      Narrator = new ScoreboardNarrator(oldScoreboard, Scoreboard);
+      var oldScoreboard = new Scoreboard(backupParsedInput.Climbers, null);
 
-      await _backupService.Add(JsonConvert.SerializeObject(input));
+      Scoreboard = new Scoreboard(parsedInput.Climbers, oldScoreboard.AnalysedClimbersInRankOrder);
+
+      Narrator = new ScoreboardNarrator(oldScoreboard, Scoreboard);
     }
   }
 }
