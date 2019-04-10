@@ -34,7 +34,7 @@
         <th style="font-size: x-small; text-align: center;">Rank<br />Change</th>
         <th>Climber</th>
         <th># Climbs</th>
-        <th>Diff.</th>
+        <th style="font-size: x-small; text-align: center;">To<br />Win</th>
         <th style="font-size: x-small; text-align: center;">Avg.<br />Grade</th>
         <th style="font-size: x-small; text-align: center;">Highest<br />Grade</th>
         <th style="font-size: x-small; text-align: center;">Lowest<br />Grade</th>
@@ -72,7 +72,7 @@
               <td style="text-align: center; font-size: smaller; vertical-align: middle; color: @rankDeltaColour;">@rankDelta</td>
               <td style="text-align: left;"><a href="#@name.Replace(" ", "")">@name</a></td>
               <td style="text-align: center;">@routeCount</td>
-              <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #606060;">-@toWin</td>
+              <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #606060;">@toWin</td>
               <td style="text-align: center; font-size: @averageGradeFontSize; font-weight: @averageGradeFontWeight; vertical-align: middle; color: #60a0d0;">@climber.AverageGradeClimbed</td>
               <td style="text-align: center; font-size: @highestGradeFontSize; font-weight: @highestGradeFontWeight; vertical-align: middle; color: #a0a0a0;">@climber.HighestGradeClimbed</td>
               <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #a0a0a0;">@climber.LowestGradeClimbed</td>
