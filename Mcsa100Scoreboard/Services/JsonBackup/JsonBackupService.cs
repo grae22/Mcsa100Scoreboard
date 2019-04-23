@@ -15,6 +15,8 @@ namespace Mcsa100Scoreboard.Services.JsonBackup
     private readonly IWebRestService _webRestService;
     private readonly int _maxBackupAgeInDays;
 
+    private JsonBackupData _cachedRetrievedData;
+
     public JsonBackupService(
       in ITimeService timeService,
       in IWebRestService webRestService,
@@ -68,16 +70,37 @@ namespace Mcsa100Scoreboard.Services.JsonBackup
         .Value;
     }
 
-    private async Task<JsonBackupData> RetrieveData()
+    public async Task<string> GetNewest()
     {
-      var data = await _webRestService.Get<JsonBackupData>();
+      var data = await RetrieveData();
 
-      if (data == null)
+      if (data.DataByTimestamp.Count == 0)
       {
-        data = new JsonBackupData();
+        return null;
       }
 
-      return data;
+      return data
+        .DataByTimestamp
+        .OrderByDescending(d => d.Key)
+        .First()
+        .Value;
+    }
+
+    private async Task<JsonBackupData> RetrieveData()
+    {
+      if (_cachedRetrievedData != null)
+      {
+        return _cachedRetrievedData;
+      }
+
+      _cachedRetrievedData = await _webRestService.Get<JsonBackupData>();
+
+      if (_cachedRetrievedData == null)
+      {
+        _cachedRetrievedData = new JsonBackupData();
+      }
+
+      return _cachedRetrievedData;
     }
 
     private void RemoveExpiredBackups(in JsonBackupData data)
