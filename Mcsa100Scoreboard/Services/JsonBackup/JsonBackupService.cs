@@ -70,9 +70,16 @@ namespace Mcsa100Scoreboard.Services.JsonBackup
         .Value;
     }
 
-    public async Task<string> GetNewest()
+    public async Task<string> GetNewest(bool excludeToday)
     {
       var data = await RetrieveData();
+
+      if (excludeToday)
+      {
+        data
+          .DataByTimestamp
+          .Remove(_timeService.Now.ToString(KeyDateFormat));
+      }
 
       if (data.DataByTimestamp.Count == 0)
       {

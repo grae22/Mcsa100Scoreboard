@@ -274,18 +274,18 @@ namespace Tests.Services.JsonBackup
             {
               { "2019-04-06", "{\"key1\": 123}" },
               { "2019-04-02", "{\"key2\": 456}" },
-              { "2019-04-07", "{\"key3\": 789}" }
+              { "2019-04-08", "{\"key3\": 789}" }
             }
           });
 
       // Act.
       string result = testObject
-        .GetNewest()
+        .GetNewest(true)
         .GetAwaiter()
         .GetResult();
 
       // Assert.
-      Assert.AreEqual("{\"key3\": 789}", result);
+      Assert.AreEqual("{\"key1\": 123}", result);
     }
 
     [Test]
@@ -300,7 +300,7 @@ namespace Tests.Services.JsonBackup
 
       // Act.
       string result = testObject
-        .GetNewest()
+        .GetNewest(true)
         .GetAwaiter()
         .GetResult();
 
@@ -327,7 +327,7 @@ namespace Tests.Services.JsonBackup
             {
               { "2019-04-06", "{\"key1\": 123}" },
               { "2019-04-02", "{\"key2\": 456}" },
-              { "2019-04-07", "{\"key3\": 789}" }
+              { "2019-04-08", "{\"key3\": 789}" }
             }
           });
 
@@ -338,7 +338,7 @@ namespace Tests.Services.JsonBackup
         .GetResult();
 
       testObject
-        .GetNewest()
+        .GetNewest(true)
         .GetAwaiter()
         .GetResult();
 
