@@ -14,8 +14,8 @@ namespace Mcsa100Scoreboard.Pages
 {
   public class IndexModel : PageModel
   {
-    public Scoreboard Scoreboard { get; private set; }
-    public ScoreboardNarrator Narrator { get; private set; }
+    public Scoreboard Scoreboard { get; private set; } = new Scoreboard(null, null);
+    public ScoreboardNarrator Narrator { get; private set; } = new ScoreboardNarrator(null, null);
 
     private const string GoogleSheetsBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
 
@@ -64,23 +64,21 @@ namespace Mcsa100Scoreboard.Pages
 
       if (input == null)
       {
-        Scoreboard = new Scoreboard(null, null);
-        Narrator = new ScoreboardNarrator(null, null);
         return;
       }
 
-      if (backupInput == null)
+      Scoreboard oldScoreboard = null;
+
+      if (backupInput != null)
       {
-        Narrator = new ScoreboardNarrator(null, null);
-        return;
+        var backupParsedInput = new InputParser(backupInput);
+
+        oldScoreboard = new Scoreboard(backupParsedInput.Climbers, null);
       }
 
       var parsedInput = new InputParser(input);
-      var backupParsedInput = new InputParser(backupInput);
-      var oldScoreboard = new Scoreboard(backupParsedInput.Climbers, null);
 
-      Scoreboard = new Scoreboard(parsedInput.Climbers, oldScoreboard.AnalysedClimbersInRankOrder);
-
+      Scoreboard = new Scoreboard(parsedInput.Climbers, oldScoreboard?.AnalysedClimbersInRankOrder);
       Narrator = new ScoreboardNarrator(oldScoreboard, Scoreboard);
     }
   }
