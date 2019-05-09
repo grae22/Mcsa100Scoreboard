@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using Mcsa100Scoreboard.Domain;
+using Mcsa100Scoreboard.Domain.Climbs;
 using Mcsa100Scoreboard.Models;
 using Mcsa100Scoreboard.Services;
 using Mcsa100Scoreboard.Services.JsonBackup;

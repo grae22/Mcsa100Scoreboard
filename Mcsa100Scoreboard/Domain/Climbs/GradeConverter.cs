@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Mcsa100Scoreboard.Domain
+namespace Mcsa100Scoreboard.Domain.Climbs
 {
   internal static class GradeConverter
   {

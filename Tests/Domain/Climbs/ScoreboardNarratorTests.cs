@@ -1,12 +1,12 @@
 ﻿using System.Text.RegularExpressions;
 
-using Mcsa100Scoreboard.Domain;
+using Mcsa100Scoreboard.Domain.Climbs;
 
 using NSubstitute;
 
 using NUnit.Framework;
 
-namespace Tests.Domain
+namespace Tests.Domain.Climbs
 {
   [TestFixture]
   public class ScoreboardNarratorTests

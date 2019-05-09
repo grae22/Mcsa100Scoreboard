@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 
-using Mcsa100Scoreboard.Domain;
+using Mcsa100Scoreboard.Domain.Climbs;
 
 using NUnit.Framework;
 
-namespace Tests.Domain
+namespace Tests.Domain.Climbs
 {
   [TestFixture]
   public class ClimberTests

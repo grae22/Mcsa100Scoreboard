@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Mcsa100Scoreboard.Domain
+namespace Mcsa100Scoreboard.Domain.Climbs
 {
   public class ScoreboardNarrator
   {

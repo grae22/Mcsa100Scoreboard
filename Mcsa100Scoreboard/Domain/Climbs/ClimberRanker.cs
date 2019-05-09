@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Mcsa100Scoreboard.Domain
+namespace Mcsa100Scoreboard.Domain.Climbs
 {
   public class ClimberRanker
   {

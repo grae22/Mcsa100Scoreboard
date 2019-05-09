@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Mcsa100Scoreboard.Models;
 
-namespace Mcsa100Scoreboard.Domain
+namespace Mcsa100Scoreboard.Domain.Climbs
 {
   internal class InputParser
   {

@@ -3,7 +3,7 @@ using System.Linq;
 
 using Microsoft.EntityFrameworkCore.Internal;
 
-namespace Mcsa100Scoreboard.Domain
+namespace Mcsa100Scoreboard.Domain.Climbs
 {
   public class Route : IEquatable<Route>
   {

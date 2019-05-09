@@ -1,4 +1,4 @@
-﻿namespace Mcsa100Scoreboard.Domain
+﻿namespace Mcsa100Scoreboard.Domain.Climbs
 {
   public interface IClimberAnalysis
   {
