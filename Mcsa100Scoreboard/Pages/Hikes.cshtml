@@ -33,7 +33,6 @@
         <th>Rank</th>
         <th>Hiker</th>
         <th># Achievements</th>
-        <th style="font-size: x-small; text-align: center;">To<br />Win</th>
       </tr>
       </thead>
       @{
@@ -47,13 +46,11 @@
             string name = competitor.Competitor.Name;
             int routeCount = competitor.Competitor.Scoreables.Count();
             string rankDeltaColour = "black";
-            string toWin = (rank > 1 ? $"{bestCount - routeCount + 1}" : "-");
 
             <tr>
               <td style="text-align: center;">@rank</td>
               <td style="text-align: left;"><a href="#@name.Replace(" ", "")">@name</a></td>
               <td style="text-align: center;">@routeCount</td>
-              <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #606060;">@toWin</td>
             </tr>
           }
         }
