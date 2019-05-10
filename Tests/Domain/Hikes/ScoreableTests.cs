@@ -10,6 +10,9 @@ namespace Tests.Domain.Hikes
     [TestCase("(S) Name")]
     [TestCase("(P) Name")]
     [TestCase("(C) Name")]
+    [TestCase("(s) Name")]
+    [TestCase("(p) Name")]
+    [TestCase("(c) Name")]
     public void Create_GivenCorrectTypeId_ShouldReturnScoreable(in string name)
     {
       // Arrange.
@@ -18,7 +21,7 @@ namespace Tests.Domain.Hikes
 
       // Assert.
       Assert.NotNull(result);
-      Assert.AreEqual(name[1], result.TypeId);
+      Assert.AreEqual(name[1].ToString().ToUpper()[0], result.TypeId);
     }
 
     [TestCase("(X) Name")]
