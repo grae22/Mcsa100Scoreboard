@@ -15,7 +15,7 @@ namespace Tests.Domain.Climbs
     public void Climbers_GivenValidInput_ShouldReturnClimbersAndClimbs()
     {
       // Arrange.
-      InputModel input = TestData.TestDataUtils.LoadTestInput(@"TestData\InputParserTests_TestData.json");
+      InputModel input = TestData.TestDataUtils.LoadClimbsTestInput(@"TestData\InputParserTests_TestData.json");
 
       var testObject = new InputParser(input);
 

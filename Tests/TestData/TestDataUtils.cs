@@ -8,16 +8,27 @@ namespace Tests.TestData
 {
   internal static class TestDataUtils
   {
-    private static string _rawData;
+    private static string _climbsRawData;
+    private static string _hikesRawData;
 
-    public static InputModel LoadTestInput(in string path)
+    public static InputModel LoadClimbsTestInput(in string path)
     {
-      if (_rawData == null)
+      if (_climbsRawData == null)
       {
-        _rawData = File.ReadAllText(path);
+        _climbsRawData = File.ReadAllText(path);
       }
 
-      return JsonConvert.DeserializeObject<InputModel>(_rawData);
+      return JsonConvert.DeserializeObject<InputModel>(_climbsRawData);
+    }
+
+    public static InputModel LoadHikesTestInput(in string path)
+    {
+      if (_hikesRawData == null)
+      {
+        _hikesRawData = File.ReadAllText(path);
+      }
+
+      return JsonConvert.DeserializeObject<InputModel>(_hikesRawData);
     }
   }
 }

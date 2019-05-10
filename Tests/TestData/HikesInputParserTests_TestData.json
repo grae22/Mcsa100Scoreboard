@@ -1,0 +1,45 @@
+﻿{
+  "range": "Sheet1!A1:Z500",
+  "majorDimension": "ROWS",
+  "values": [
+    [
+      "List your (P)asses, (S)ummits and (C)aves - prefix according to type, for example: (P) Leslie's Pass"
+    ],
+    [
+      "Graeme",
+      "Person1",
+      "Person2"
+    ],
+    [
+      "(S) Rhino",
+      "(S) Abc",
+      "(P) Xyz"
+    ],
+    [
+      "(P) Around the Corner Pass",
+      "(C) Def"
+    ],
+    [
+      "(S) Trojan Wall",
+      "(C) Ghi"
+    ],
+    [
+      "(C) Upper Injisuthi Cave"
+    ],
+    [
+      "(S) Injisuthi Dome"
+    ],
+    [
+      "(S) Mafadi"
+    ],
+    [
+      "(S) Lithabalong"
+    ],
+    [
+      "(S) Sombrero"
+    ],
+    [
+      "(P) Leslie's Pass"
+    ]
+  ]
+}
