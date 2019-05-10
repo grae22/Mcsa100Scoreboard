@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Mcsa100Scoreboard.Domain.Hikes
 {
-  public class Competitor
+  public class Competitor : ICompetitor
   {
     public string Name { get; }
     public IEnumerable<Scoreable> Scoreables => _scoreables;
 
-    private List<Scoreable> _scoreables = new List<Scoreable>();
+    private readonly List<Scoreable> _scoreables = new List<Scoreable>();
 
     public Competitor(in string name)
     {
