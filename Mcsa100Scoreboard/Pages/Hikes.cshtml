@@ -62,6 +62,24 @@
   </div>
 </p>
 
+<!-- Key -->
+<p>
+  <div>
+    <table class="table table-sizetocontent" style="background-color: rgba(255, 255, 255, 0.75);">
+      <tr>
+        <td style="font-size: smaller; color: #000000; text-align: center;">
+          <b>~ Key ~</b>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: smaller; color: #000000; text-align: left;">
+          (C) : Cave<br />(P) : Pass<br />(S) : Summit
+        </td>
+      </tr>
+    </table>
+  </div>
+</p>
+
 <!-- Hikers' achievements -->
 @{
   foreach (var competitor in @Model.Scoreboard.RankedCompetitors)
@@ -102,7 +120,7 @@
   <script src="~/js/jquery.backstretch.min.js"></script>
 </environment>
 <script language="javascript">
-  $.backstretch("images/background.jpg");
+  $.backstretch("images/hikesbackground.jpg");
 
   window.onscroll = function() {
     scrollFunction();
