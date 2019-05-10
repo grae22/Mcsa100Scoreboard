@@ -16,9 +16,16 @@ namespace Mcsa100Scoreboard.Domain.Hikes
         return null;
       }
 
+      string name = GetScoreableNameFromPrefixedRawName(rawName);
+
+      if (name == null)
+      {
+        return null;
+      }
+
       return new Scoreable(
         scoreableTypeId.Value,
-        "");
+        name);
     }
 
     private static char? GetScoreableType(in string rawName)
@@ -47,6 +54,25 @@ namespace Mcsa100Scoreboard.Domain.Hikes
     private static bool IsValidScoreableTypeId(in char id)
     {
       return ValidTypes.Contains(id);
+    }
+
+    private static string GetScoreableNameFromPrefixedRawName(in string rawName)
+    {
+      if (rawName.Length < 3)
+      {
+        return null;
+      }
+
+      string name = rawName.Remove(0, 3);
+
+      name = name.Trim();
+
+      if (!name.Any())
+      {
+        return null;
+      }
+
+      return name;
     }
 
     public char TypeId { get; }
