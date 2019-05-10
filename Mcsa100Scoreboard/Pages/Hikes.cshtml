@@ -1,0 +1,125 @@
+﻿@page
+@model HikesModel
+@{
+    ViewData["Title"] = "MCSA-KZN Centenary Hiking Scoreboard";
+}
+
+<html>
+<head>
+  <environment include="Development">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+  </environment>
+  <environment exclude="Development">
+    <link rel="stylesheet" href="~/css/site.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+  </environment>
+  <title>MCSA-KZN Centenary Hiking Scoreboard</title>
+</head>
+<body>
+
+<!-- Header banner -->
+<div class="panel panel-default" style="background-color: rgba(255, 255, 255, 0.7);">
+  <h2 align="center" class="page-heading">MCSA-KZN Centenary Hiking Scoreboard</h2>
+  <h4 align="center">~ <span style="font-weight: bold;">@Model.Scoreboard.RankedCompetitors.Sum(c => c.Competitor.Scoreables.Count())</span> achievements logged by <span style="font-weight: bold;">@Model.Scoreboard.RankedCompetitors.Count()</span> hikers ~</h4>
+</div>
+
+<!-- Ranking table -->
+<p>
+  <div>
+    <table class="table table-striped table-sizetocontent table-bordered" style="background-color: white;">
+      <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Hiker</th>
+        <th># Achievements</th>
+        <th style="font-size: x-small; text-align: center;">To<br />Win</th>
+      </tr>
+      </thead>
+      @{
+        if (Model.Scoreboard.RankedCompetitors.Any())
+        {
+          int bestCount = Model.Scoreboard.RankedCompetitors.First().Competitor.Scoreables.Count();
+
+          foreach (var competitor in @Model.Scoreboard.RankedCompetitors)
+          {
+            int rank = competitor.Rank;
+            string name = competitor.Competitor.Name;
+            int routeCount = competitor.Competitor.Scoreables.Count();
+            string rankDeltaColour = "black";
+            string toWin = (rank > 1 ? $"{bestCount - routeCount + 1}" : "-");
+
+            <tr>
+              <td style="text-align: center;">@rank</td>
+              <td style="text-align: left;"><a href="#@name.Replace(" ", "")">@name</a></td>
+              <td style="text-align: center;">@routeCount</td>
+              <td style="text-align: center; font-size: smaller; vertical-align: middle; color: #606060;">@toWin</td>
+            </tr>
+          }
+        }
+      }
+    </table>
+  </div>
+</p>
+
+<!-- Hikers' achievements -->
+@{
+  foreach (var competitor in @Model.Scoreboard.RankedCompetitors)
+  {
+    <p>
+      <div>
+        <a name="@competitor.Competitor.Name.Replace(" ", "")"></a>
+        <table class="table table-routes" style="background-color: white;">
+          <thead><tr><th>#@competitor.Rank : @competitor.Competitor.Name</th></tr></thead>
+          @{
+            int achivementNumber = 1;
+
+            foreach (var scoreable in competitor.Competitor.Scoreables)
+            {
+              <tr>
+                <td style="text-align: left;">@achivementNumber : @scoreable.FullName</td>
+              </tr>
+
+              achivementNumber++;
+            }
+          }
+        </table>
+      </div>
+    </p>
+  }
+}
+
+<button onclick="topFunction()" id="topBtn" title="Go to top">Top</button>
+
+<environment include="Development">
+  <script src="~/lib/jquery/dist/jquery.js"></script>
+  <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="~/js/jquery.backstretch.min.js"></script>
+</environment>
+<environment exclude="Development">
+  <script src="~/lib/jquery/dist/jquery.js"></script>
+  <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="~/js/jquery.backstretch.min.js"></script>
+</environment>
+<script language="javascript">
+  $.backstretch("images/background.jpg");
+
+  window.onscroll = function() {
+    scrollFunction();
+  };
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      document.getElementById("topBtn").style.display = "block";
+    } else {
+      document.getElementById("topBtn").style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  }
+</script>
+</body>
+</html>

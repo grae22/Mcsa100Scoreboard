@@ -17,4 +17,9 @@
   <ItemGroup>
     <None Include="wwwroot\images\original.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="Pages\Hikes.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
 </Project>

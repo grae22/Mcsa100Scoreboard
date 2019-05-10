@@ -96,11 +96,11 @@ namespace Tests.Domain.Hikes
       // Assert.
       Assert.NotNull(testObject.RankedCompetitors);
       Assert.AreEqual(5, testObject.RankedCompetitors.Count());
-      Assert.AreSame(hiker2, testObject.RankedCompetitors.First());
-      Assert.AreSame(hiker1, testObject.RankedCompetitors.Last());
-      Assert.AreSame(hiker3, testObject.RankedCompetitors.ElementAt(1));
-      Assert.AreSame(hiker3a, testObject.RankedCompetitors.ElementAt(2));
-      Assert.AreSame(hiker3b, testObject.RankedCompetitors.ElementAt(3));
+      Assert.AreEqual("2", testObject.RankedCompetitors.First().Competitor.Name);
+      Assert.AreEqual("3", testObject.RankedCompetitors.ElementAt(1).Competitor.Name);
+      Assert.AreEqual("3a", testObject.RankedCompetitors.ElementAt(2).Competitor.Name);
+      Assert.AreEqual("3b", testObject.RankedCompetitors.ElementAt(3).Competitor.Name);
+      Assert.AreEqual("1", testObject.RankedCompetitors.Last().Competitor.Name);
     }
   }
 }

@@ -77,6 +77,7 @@ namespace Mcsa100Scoreboard.Domain.Hikes
 
     public char TypeId { get; }
     public string Name { get; }
+    public string FullName => $"({TypeId}) {Name}";
 
     private Scoreable(
       in char typeId,

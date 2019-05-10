@@ -54,6 +54,7 @@ namespace Tests.Domain.Hikes
       // Assert.
       Assert.NotNull(result);
       Assert.AreEqual("Some Scoreable", result.Name);
+      Assert.AreEqual($"{name.Substring(0, 3)} Some Scoreable", result.FullName);
     }
   }
 }
