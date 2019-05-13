@@ -5,7 +5,11 @@ namespace Mcsa100Scoreboard.Domain.Hikes
 {
   public class Scoreable
   {
-    private static readonly char[] ValidTypes = { 'S', 'C', 'P' };
+    public const char CaveTypeId = 'C';
+    public const char PassTypeId = 'P';
+    public const char SummitTypeId = 'S';
+
+    private static readonly char[] ValidTypes = { CaveTypeId, PassTypeId, SummitTypeId };
 
     public static Scoreable Create(in string rawName)
     {

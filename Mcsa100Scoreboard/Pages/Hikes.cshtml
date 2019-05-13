@@ -1,4 +1,5 @@
 ﻿@page
+@using Mcsa100Scoreboard.Domain.Hikes
 @model HikesModel
 @{
     ViewData["Title"] = "MCSA-KZN Centenary Hiking Scoreboard";
@@ -18,9 +19,13 @@
 </head>
 <body>
 
+<div style="vertical-align: top;">
+  <a href="@Url.Page("Index")">Climbing Leaderboard</a>
+</div>
+
 <!-- Header banner -->
 <div class="panel panel-default" style="background-color: rgba(255, 255, 255, 0.7);">
-  <h2 align="center" class="page-heading">MCSA-KZN Centenary Hiking Scoreboard</h2>
+  <h2 align="center" class="page-heading">MCSA-KZN Centenary Hiking Leaderboard</h2>
   <h4 align="center">~ <span style="font-weight: bold;">@Model.Scoreboard.RankedCompetitors.Sum(c => c.Competitor.Scoreables.Count())</span> achievements logged by <span style="font-weight: bold;">@Model.Scoreboard.RankedCompetitors.Count()</span> hikers ~</h4>
 </div>
 
@@ -33,24 +38,32 @@
         <th>Rank</th>
         <th>Hiker</th>
         <th># Achievements</th>
+        <th>Caves</th>
+        <th>Passes</th>
+        <th>Summits</th>
       </tr>
       </thead>
       @{
         if (Model.Scoreboard.RankedCompetitors.Any())
         {
-          int bestCount = Model.Scoreboard.RankedCompetitors.First().Competitor.Scoreables.Count();
-
           foreach (var competitor in @Model.Scoreboard.RankedCompetitors)
           {
             int rank = competitor.Rank;
             string name = competitor.Competitor.Name;
-            int routeCount = competitor.Competitor.Scoreables.Count();
-            string rankDeltaColour = "black";
+            int totalCount = competitor.Competitor.Scoreables.Count();
+            int caveCount = competitor.Competitor.Scoreables.Count(s => s.TypeId == Scoreable.CaveTypeId);
+            int passCount = competitor.Competitor.Scoreables.Count(s => s.TypeId == Scoreable.PassTypeId);
+            int summitCount = competitor.Competitor.Scoreables.Count(s => s.TypeId == Scoreable.SummitTypeId);
+
+            string subCountsStyle = "text-align: center; color: #a0a0a0;";
 
             <tr>
               <td style="text-align: center;">@rank</td>
               <td style="text-align: left;"><a href="#@name.Replace(" ", "")">@name</a></td>
-              <td style="text-align: center;">@routeCount</td>
+              <td style="text-align: center;">@totalCount</td>
+              <td style="@subCountsStyle">@caveCount</td>
+              <td style="@subCountsStyle">@passCount</td>
+              <td style="@subCountsStyle">@summitCount</td>
             </tr>
           }
         }
@@ -70,7 +83,7 @@
       </tr>
       <tr>
         <td style="font-size: smaller; color: #000000; text-align: left;">
-          (C) : Cave<br />(P) : Pass<br />(S) : Summit
+          (C) : Cave<br/>(P) : Pass<br/>(S) : Summit
         </td>
       </tr>
     </table>
