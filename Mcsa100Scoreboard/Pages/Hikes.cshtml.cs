@@ -13,6 +13,7 @@ namespace Mcsa100Scoreboard.Pages
   public class HikesModel : PageModel
   {
     public Scoreboard Scoreboard { get; private set; } = new Scoreboard(null);
+    public string SheetId { get; }
 
     private const string GoogleSheetsBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
 
@@ -21,9 +22,10 @@ namespace Mcsa100Scoreboard.Pages
     public HikesModel()
     {
       string googleApiKey = Environment.GetEnvironmentVariable(EnvironmentVariables.GoogleApiKeyVarName) ?? throw new Exception("Api Key env-var not found.");
-      string googleSheetId = Environment.GetEnvironmentVariable(EnvironmentVariables.HikesGoogleSheetIdKeyVarName) ?? throw new Exception("Sheet Id env-var not found.");
 
-      _liveDataSource = new WebRestService(new Uri($"{GoogleSheetsBaseUrl}{googleSheetId}/values/Sheet1!A1:Z500?key={googleApiKey}"));
+      SheetId = Environment.GetEnvironmentVariable(EnvironmentVariables.HikesGoogleSheetIdKeyVarName) ?? throw new Exception("Sheet Id env-var not found.");
+
+      _liveDataSource = new WebRestService(new Uri($"{GoogleSheetsBaseUrl}{SheetId}/values/Sheet1!A1:Z500?key={googleApiKey}"));
     }
 
     public async Task OnGet()

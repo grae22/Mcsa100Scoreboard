@@ -17,6 +17,7 @@ namespace Mcsa100Scoreboard.Pages
   {
     public Scoreboard Scoreboard { get; private set; } = new Scoreboard(null, null);
     public ScoreboardNarrator Narrator { get; private set; } = new ScoreboardNarrator(null, null);
+    public string SheetId { get; }
 
     private const string GoogleSheetsBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
 
@@ -26,10 +27,10 @@ namespace Mcsa100Scoreboard.Pages
     public IndexModel()
     {
       string googleApiKey = Environment.GetEnvironmentVariable(EnvironmentVariables.GoogleApiKeyVarName) ?? throw new Exception("Api Key env-var not found.");
-      string googleSheetId = Environment.GetEnvironmentVariable(EnvironmentVariables.GoogleSheetIdKeyVarName) ?? throw new Exception("Sheet Id env-var not found.");
+      SheetId = Environment.GetEnvironmentVariable(EnvironmentVariables.GoogleSheetIdKeyVarName) ?? throw new Exception("Sheet Id env-var not found.");
       string backupUrl = Environment.GetEnvironmentVariable(EnvironmentVariables.DataBackupUrlVarName) ?? throw new Exception("Data Backup URL env-var not found.");
 
-      _liveDataSource = new WebRestService(new Uri($"{GoogleSheetsBaseUrl}{googleSheetId}/values/Sheet1!A1:Z500?key={googleApiKey}"));
+      _liveDataSource = new WebRestService(new Uri($"{GoogleSheetsBaseUrl}{SheetId}/values/Sheet1!A1:Z500?key={googleApiKey}"));
 
       var backupWebService = new WebRestService(new Uri(backupUrl));
 
