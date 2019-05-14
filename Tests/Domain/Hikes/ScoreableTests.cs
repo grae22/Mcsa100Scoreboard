@@ -31,8 +31,21 @@ namespace Tests.Domain.Hikes
     [TestCase("S Name")]
     [TestCase("C Name")]
     [TestCase("P Name")]
+    public void Create_GivenInvalidTypeId_ShouldReturnWithUnknownTypeId(in string name)
+    {
+      // Arrange.
+      // Act.
+      Scoreable result = Scoreable.Create(name);
+
+      // Assert.
+      Assert.NotNull(result);
+      Assert.AreEqual(Scoreable.UnknownTypeId, result.TypeId);
+    }
+
+    [TestCase("")]
+    [TestCase("   ")]
     [TestCase(null)]
-    public void Create_GivenInvalidTypeId_ShouldReturnNull(in string name)
+    public void Create_GivenNullOrEmptyRawName_ShouldReturnNull(in string name)
     {
       // Arrange.
       // Act.

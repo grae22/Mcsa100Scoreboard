@@ -8,11 +8,17 @@ namespace Mcsa100Scoreboard.Domain.Hikes
     public const char CaveTypeId = 'C';
     public const char PassTypeId = 'P';
     public const char SummitTypeId = 'S';
+    public const char UnknownTypeId = '?';
 
     private static readonly char[] ValidTypes = { CaveTypeId, PassTypeId, SummitTypeId };
 
     public static Scoreable Create(in string rawName)
     {
+      if (rawName == null)
+      {
+        return null;
+      }
+
       char? scoreableTypeId = GetScoreableType(rawName);
 
       if (scoreableTypeId == null)
@@ -22,7 +28,7 @@ namespace Mcsa100Scoreboard.Domain.Hikes
 
       string name = GetScoreableNameFromPrefixedRawName(rawName);
 
-      if (name == null)
+      if (string.IsNullOrWhiteSpace(name))
       {
         return null;
       }
@@ -37,7 +43,7 @@ namespace Mcsa100Scoreboard.Domain.Hikes
       if (rawName == null ||
           rawName.Length < 3)
       {
-        return null;
+        return UnknownTypeId;
       }
 
       string prefixWithTypeId =
@@ -49,7 +55,7 @@ namespace Mcsa100Scoreboard.Domain.Hikes
 
       if (!IsValidScoreableTypeId(id))
       {
-        return null;
+        return UnknownTypeId;
       }
 
       return id;
@@ -64,7 +70,7 @@ namespace Mcsa100Scoreboard.Domain.Hikes
     {
       if (rawName.Length < 3)
       {
-        return null;
+        return rawName;
       }
 
       string name = rawName.Remove(0, 3);

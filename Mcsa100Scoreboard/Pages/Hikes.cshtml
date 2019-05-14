@@ -134,15 +134,17 @@
         <table class="table table-routes" style="background-color: white;">
           <thead><tr><th>#@competitor.Rank : @competitor.Competitor.Name</th></tr></thead>
           @{
-            int achivementNumber = 1;
+            int achievementNumber = 1;
 
             foreach (var scoreable in competitor.Competitor.Scoreables)
             {
+              string errorStyle = scoreable.TypeId == Scoreable.UnknownTypeId ? "color: red;" : "";
+
               <tr>
-                <td style="text-align: left;">@achivementNumber : @scoreable.FullName</td>
+                <td style="text-align: left;@errorStyle">@achievementNumber : @scoreable.FullName</td>
               </tr>
 
-              achivementNumber++;
+              achievementNumber++;
             }
           }
         </table>
