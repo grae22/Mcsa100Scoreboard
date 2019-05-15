@@ -68,7 +68,7 @@ namespace Tests.Domain.Climbs
       Assert.NotNull(result);
       Assert.AreEqual(1, result[climberWith2Routes1]);
       Assert.AreEqual(1, result[climberWith2Routes2]);
-      Assert.AreEqual(2, result[climberWith1Route]);
+      Assert.AreEqual(3, result[climberWith1Route]);
     }
   }
 }

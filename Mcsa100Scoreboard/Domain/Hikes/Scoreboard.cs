@@ -41,7 +41,7 @@ namespace Mcsa100Scoreboard.Domain.Hikes
             new RankedCompetitor(competitor, rank));
         }
 
-        rank++;
+        rank += grouping.Count();
       }
     }
   }

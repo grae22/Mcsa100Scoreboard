@@ -33,7 +33,7 @@ namespace Mcsa100Scoreboard.Domain.Climbs
           _rankedClimbers.Add(climber, rank);
         }
 
-        rank++;
+        rank += grouping.Count();
       }
     }
   }
