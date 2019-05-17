@@ -22,7 +22,7 @@ namespace Mcsa100Scoreboard.Pages
     public string SheetId { get; }
 
     private const string GoogleSheetsBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
-    private const int MaxPopularRoutes = 20;
+    private const int MaxPopularRoutes = 10;
 
     private readonly IWebRestService _liveDataSource;
     private readonly JsonBackupService _backupService;

@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Collections.Immutable
 @model IndexModel
 @{
     ViewData["Title"] = "MCSA-KZN 100 Climbs Scoreboard";
@@ -144,7 +145,7 @@
 <p>
   <div>
     <table class="table table-sizetocontent table-bordered" style="background-color: rgba(255, 255, 255, 0.8);">
-      <caption style="text-align: center; color: black; background-color: rgba(220, 220, 220, 0.8);"><b>~ Top 20 Routes ~</b></caption>
+      <caption style="text-align: center; color: black; background-color: rgba(220, 220, 220, 0.8);"><b>~ Top 10 Routes ~</b></caption>
       <thead>
       <tr>
         <th>Name</th>
@@ -161,6 +162,75 @@
               <td style="text-align: center;">@route.AscentCount</td>
             </tr>
           }
+        }
+      }
+    </table>
+  </div>
+</p>
+
+<!-- Analysis by route grade -->
+<p>
+  <div>
+    <table class="table table-sizetocontent table-bordered" style="background-color: rgba(255, 255, 255, 0.8);">
+      <caption style="text-align: center; color: black; background-color: rgba(220, 220, 220, 0.8);"><b>~ Ascents by Grade ~</b></caption>
+      <thead>
+      </thead>
+      @{
+        if (Model.RouteAnalysis.AscentsByGrade.Any())
+        {
+          int maxGrade = Model.RouteAnalysis.AscentsByGrade.Max(a => a.Key);
+          int minGrade = Model.RouteAnalysis.AscentsByGrade.Min(a => a.Key);
+          int maxAscents = (int)Model.RouteAnalysis.AscentsByGrade.Max(a => a.Value);
+          int minAscents = (int)Model.RouteAnalysis.AscentsByGrade.Min(a => a.Value);
+
+          int columnCount = maxGrade - minGrade + 1;
+          int rowCount = maxAscents - minAscents + 2;
+
+          for (int row = 0; row < rowCount; row++)
+          {
+            <tr style="height: 1px; padding: 0;">
+              
+              @for (int column = 0; column < columnCount; column++)
+              {
+                int grade = column + minGrade;
+                int ascents = 0;
+                int rowAscents = maxAscents - row;
+                string cellStyle = string.Empty;
+
+                if (@Model.RouteAnalysis.AscentsByGrade.ContainsKey(grade))
+                {
+                  ascents = (int)@Model.RouteAnalysis.AscentsByGrade[grade];
+                }
+
+                if (ascents >= rowAscents)
+                {
+                  cellStyle = "background-color: orange;";
+                }
+
+                <td style="@cellStyle height: 1px; padding: 1px;"></td>
+              }
+
+            </tr>
+          }
+
+          <tr>
+            @for (int grade = minGrade; grade <= maxGrade; grade++)
+            {
+              <td style="">@grade</td>
+            }
+          </tr>
+
+          <tr>
+            @for (int grade = minGrade; grade <= maxGrade; grade++)
+            {
+              if (!@Model.RouteAnalysis.AscentsByGrade.ContainsKey(grade))
+              {
+                continue;
+              }
+
+              <td style="font-size: smaller; text-align: center;">@Model.RouteAnalysis.AscentsByGrade[grade]</td>
+            }
+          </tr>
         }
       }
     </table>

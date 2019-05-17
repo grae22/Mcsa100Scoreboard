@@ -17,7 +17,10 @@ namespace Mcsa100Scoreboard.Domain.Climbs
       }
     }
 
+    public IReadOnlyDictionary<int, uint> AscentsByGrade => _ascentsByGrade;
+
     private readonly List<Route> _routes = new List<Route>();
+    private readonly Dictionary<int, uint> _ascentsByGrade = new Dictionary<int, uint>();
     private readonly int _maxPopularRoutes;
 
     public RouteAnalysis(
@@ -45,6 +48,7 @@ namespace Mcsa100Scoreboard.Domain.Climbs
     {
       AddRouteNames(climbers);
       AddRouteCounts(climbers);
+      PopulateAscentsByGrade(climbers);
     }
 
     private void AddRouteNames(in IEnumerable<IClimber> climbers)
@@ -53,14 +57,14 @@ namespace Mcsa100Scoreboard.Domain.Climbs
       {
         foreach (var route in climber.Routes)
         {
-          bool alreadExists =
+          bool alreadyExists =
             _routes
               .Any(r =>
                 r.Name.Equals(
                   route.Name,
                   StringComparison.OrdinalIgnoreCase));
 
-          if (alreadExists)
+          if (alreadyExists)
           {
             continue;
           }
@@ -90,6 +94,29 @@ namespace Mcsa100Scoreboard.Domain.Climbs
           catch (InvalidOperationException)
           {
             // We're just going to ignore this.
+          }
+        }
+      }
+    }
+
+    private void PopulateAscentsByGrade(in IEnumerable<IClimber> climbers)
+    {
+      foreach (var climber in climbers)
+      {
+        foreach (var route in climber.Routes)
+        {
+          if (!route.HasGrade)
+          {
+            continue;
+          }
+
+          if (_ascentsByGrade.ContainsKey(route.Grade))
+          {
+            _ascentsByGrade[route.Grade]++;
+          }
+          else
+          {
+            _ascentsByGrade.Add(route.Grade, 1);
           }
         }
       }
