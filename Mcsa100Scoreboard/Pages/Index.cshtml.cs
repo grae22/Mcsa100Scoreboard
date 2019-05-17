@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Mcsa100Scoreboard.Domain;
@@ -17,9 +18,11 @@ namespace Mcsa100Scoreboard.Pages
   {
     public Scoreboard Scoreboard { get; private set; } = new Scoreboard(null, null);
     public ScoreboardNarrator Narrator { get; private set; } = new ScoreboardNarrator(null, null);
+    public RouteAnalysis RouteAnalysis { get; private set; } = new RouteAnalysis(new List<IClimber>(), MaxPopularRoutes);
     public string SheetId { get; }
 
     private const string GoogleSheetsBaseUrl = "https://sheets.googleapis.com/v4/spreadsheets/";
+    private const int MaxPopularRoutes = 20;
 
     private readonly IWebRestService _liveDataSource;
     private readonly JsonBackupService _backupService;
@@ -82,6 +85,7 @@ namespace Mcsa100Scoreboard.Pages
 
       Scoreboard = new Scoreboard(parsedInput.Climbers, oldScoreboard?.AnalysedClimbersInRankOrder);
       Narrator = new ScoreboardNarrator(oldScoreboard, Scoreboard);
+      RouteAnalysis = new RouteAnalysis(parsedInput.Climbers, MaxPopularRoutes);
     }
   }
 }

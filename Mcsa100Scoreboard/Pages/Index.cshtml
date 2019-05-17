@@ -140,6 +140,33 @@
   }
 }
 
+<!-- Popular routes -->
+<p>
+  <div>
+    <table class="table table-sizetocontent table-bordered" style="background-color: rgba(255, 255, 255, 0.75);">
+      <caption style="text-align: center; color: black; background-color: rgba(220, 220, 220, 0.75);"><b>~ Top 20 Routes ~</b></caption>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Ascents</th>
+      </tr>
+      </thead>
+      @{
+        if (Model.RouteAnalysis.PopularRoutes.Any())
+        {
+          foreach (var route in @Model.RouteAnalysis.PopularRoutes)
+          {
+            <tr>
+              <td style="text-align: left;">@route.NameAndGrade</td>
+              <td style="text-align: center;">@route.AscentCount</td>
+            </tr>
+          }
+        }
+      }
+    </table>
+  </div>
+</p>
+
 <!-- Climbers' routes -->
 @{
   foreach (var climber in @Model.Scoreboard.AnalysedClimbersInRankOrder)

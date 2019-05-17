@@ -99,6 +99,7 @@ namespace Mcsa100Scoreboard.Domain.Climbs
     public string GradeFriendly { get; }
     public bool HasGrade => Grade != NoGrade;
     public string NameAndGrade => $"{Name} {GradeFriendly}".TrimEnd();
+    public uint AscentCount { get; private set; }
 
     private Route(
       in string name,
@@ -108,6 +109,16 @@ namespace Mcsa100Scoreboard.Domain.Climbs
       Name = name ?? throw new ArgumentNullException(nameof(name));
       Grade = grade;
       GradeFriendly = gradeFriendly ?? throw new ArgumentNullException(nameof(gradeFriendly));
+    }
+
+    public void LogAscent()
+    {
+      AscentCount++;
+    }
+
+    public Route Clone()
+    {
+      return Route.Create(NameAndGrade);
     }
 
     // IEquatable ---------------------------------------------------------------------------------
