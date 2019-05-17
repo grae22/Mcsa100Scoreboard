@@ -25,8 +25,15 @@
 
 <!-- Header banner -->
 <div class="panel panel-default" style="background-color: rgba(255, 255, 255, 0.7);">
+  @{
+    const int GoalNumberOfAchievements = 1200;
+    int totalAchievementCount = @Model.Scoreboard.RankedCompetitors.Sum(c => c.Competitor.Scoreables.Count());
+    int percentComplete = (int)((double)totalAchievementCount / (double)GoalNumberOfAchievements * 100.0);
+  }
+
   <h2 align="center" class="page-heading">MCSA-KZN Centenary Hiking Leaderboard</h2>
-  <h4 align="center">~ <span style="font-weight: bold;">@Model.Scoreboard.RankedCompetitors.Sum(c => c.Competitor.Scoreables.Count())</span> achievements logged by <span style="font-weight: bold;">@Model.Scoreboard.RankedCompetitors.Count()</span> hikers ~</h4>
+  <h3 align="center">~ @GoalNumberOfAchievements Caves, Passes & Summits ~</h3>
+  <h4 align="center"><span style="font-weight: bold;">@totalAchievementCount</span> achievements logged by <span style="font-weight: bold;">@Model.Scoreboard.RankedCompetitors.Count()</span> hikers... <b>@percentComplete%</b> complete</h4>
 </div>
 
 <!-- Ranking table -->
