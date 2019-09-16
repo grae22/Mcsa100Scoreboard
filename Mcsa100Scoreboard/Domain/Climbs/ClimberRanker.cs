@@ -60,7 +60,16 @@ namespace Mcsa100Scoreboard.Domain.Climbs
           {
             if (!tmpRankedClimbers.ContainsKey(c.Key))
             {
-              tmpRankedClimbers.Add(c.Key, c.Value + rankOffset);
+              int rank = c.Value;
+
+              if (rank > rankOffset)
+              {
+                tmpRankedClimbers.Add(c.Key, rank);
+              }
+              else
+              {
+                tmpRankedClimbers.Add(c.Key, rank + rankOffset);
+              }
             }
           });
 
