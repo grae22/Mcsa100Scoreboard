@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Mcsa100Scoreboard.Models;
 
+using SQLitePCL;
+
 namespace Mcsa100Scoreboard.Domain.Climbs
 {
   internal class InputParser
@@ -32,15 +34,23 @@ namespace Mcsa100Scoreboard.Domain.Climbs
 
       var climberNameByClimberIndex = new Dictionary<int, string>();
       var routesByClimberIndex = new Dictionary<int, List<string>>();
+      var overrideScoreboardPositionByClimberIndex = new Dictionary<int, int?>();
 
       // Get names of each climber (1st row).
       // [Climb number][Climber 1][Climber 2][Climber N]
       for (int column = 1; column < input.values[0].Length; column++)
       {
         int climberIndex = column - 1;
+        string rawClimberName = input.values[0][column];
 
-        climberNameByClimberIndex.Add(climberIndex, input.values[0][column]);
+        ExtractClimberNameAndOverrideScoreboardPosition(
+          rawClimberName,
+          out string climberName,
+          out int? overrideScoreboardPosition);
+
+        climberNameByClimberIndex.Add(climberIndex, climberName);
         routesByClimberIndex.Add(climberIndex, new List<string>());
+        overrideScoreboardPositionByClimberIndex.Add(climberIndex, overrideScoreboardPosition);
       }
 
       // Get each climber's routes climbed.
@@ -86,7 +96,8 @@ namespace Mcsa100Scoreboard.Domain.Climbs
 
         Climber climber = Climber.Create(
           climberNameByClimberIndex[key],
-          routes);
+          routes,
+          overrideScoreboardPositionByClimberIndex[key]);
 
         if (climber == null)
         {
@@ -94,6 +105,39 @@ namespace Mcsa100Scoreboard.Domain.Climbs
         }
 
         climbers.Add(climber);
+      }
+    }
+
+    private static void ExtractClimberNameAndOverrideScoreboardPosition(
+      in string rawName,
+      out string name,
+      out int? overrideScoreboardPosition)
+    {
+      overrideScoreboardPosition = null;
+
+      int openingBracket = rawName.IndexOf('[');
+      int closingBracket = rawName.IndexOf(']');
+
+      if (openingBracket < 0 ||
+          closingBracket < 0 ||
+          openingBracket > closingBracket)
+      {
+        name = rawName;
+        return;
+      }
+
+      name = rawName
+        .Substring(0, openingBracket)
+        .Trim();
+
+      string overrideScoreboardPositionText =
+        rawName
+          .Substring(openingBracket + 1, closingBracket - openingBracket - 1)
+          .Trim();
+
+      if (int.TryParse(overrideScoreboardPositionText, out int tempOverrideScoreboardPosition))
+      {
+        overrideScoreboardPosition = tempOverrideScoreboardPosition;
       }
     }
   }

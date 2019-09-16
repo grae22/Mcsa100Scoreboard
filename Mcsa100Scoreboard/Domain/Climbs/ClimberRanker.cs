@@ -18,6 +18,7 @@ namespace Mcsa100Scoreboard.Domain.Climbs
       }
 
       BuildRankings(climbers);
+      ApplyOverridePositions();
     }
 
     private void BuildRankings(in IEnumerable<IClimber> climbers)
@@ -35,6 +36,39 @@ namespace Mcsa100Scoreboard.Domain.Climbs
 
         rank += grouping.Count();
       }
+    }
+
+    private void ApplyOverridePositions()
+    {
+      var tmpRankedClimbers = new Dictionary<IClimber, int>();
+
+      _rankedClimbers
+        .Where(c => c.Key.OverrideScoreboardPosition.HasValue)
+        .OrderBy(c => c.Key.OverrideScoreboardPosition)
+        .ToList()
+        .ForEach(c => tmpRankedClimbers.Add(c.Key, c.Key.OverrideScoreboardPosition.Value));
+
+      int rankOffset = _rankedClimbers
+        .Keys
+        .Where(c => c.OverrideScoreboardPosition.HasValue)
+        .Max(c => c.OverrideScoreboardPosition) ?? 0;
+
+      _rankedClimbers
+        .ToList()
+        .ForEach(
+          c =>
+          {
+            if (!tmpRankedClimbers.ContainsKey(c.Key))
+            {
+              tmpRankedClimbers.Add(c.Key, c.Value + rankOffset);
+            }
+          });
+
+      _rankedClimbers.Clear();
+
+      tmpRankedClimbers
+        .ToList()
+        .ForEach(c => _rankedClimbers.Add(c.Key, c.Value));
     }
   }
 }

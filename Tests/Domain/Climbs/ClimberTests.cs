@@ -22,7 +22,7 @@ namespace Tests.Domain.Climbs
       };
 
       // Act.
-      Climber climber = Climber.Create(name, routes);
+      Climber climber = Climber.Create(name, routes, null);
 
       // Assert.
       Assert.NotNull(climber);
@@ -44,7 +44,7 @@ namespace Tests.Domain.Climbs
       };
 
       // Act.
-      Climber climber = Climber.Create(name, routes);
+      Climber climber = Climber.Create(name, routes, null);
 
       // Assert.
       Assert.Null(climber);
@@ -64,7 +64,7 @@ namespace Tests.Domain.Climbs
       };
 
       // Act.
-      Climber climber = Climber.Create(name, routes);
+      Climber climber = Climber.Create(name, routes, null);
 
       // Assert.
       Assert.AreEqual(routes.Length, climber.RouteCount);
@@ -84,7 +84,7 @@ namespace Tests.Domain.Climbs
       };
 
       // Act.
-      Climber climber = Climber.Create(name, routes);
+      Climber climber = Climber.Create(name, routes, null);
 
       // Assert.
       Assert.True(climber.GradedRoutes.Any(r => r.Name == "Route1"));

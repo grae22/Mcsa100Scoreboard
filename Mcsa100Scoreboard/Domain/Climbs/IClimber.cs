@@ -8,5 +8,6 @@ namespace Mcsa100Scoreboard.Domain.Climbs
     IEnumerable<Route> Routes { get; }
     IEnumerable<Route> GradedRoutes { get; }
     int RouteCount { get; }
+    int? OverrideScoreboardPosition { get; }
   }
 }

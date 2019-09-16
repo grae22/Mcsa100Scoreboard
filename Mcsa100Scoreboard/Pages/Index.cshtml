@@ -61,6 +61,7 @@
             string highestGradeFontSize = climber.HasHighestGradedClimb ? "normal" : "smaller";
             string averageGradeFontWeight = climber.HasHighestAverageGrade ? "bold" : "normal";
             string highestGradeFontWeight = climber.HasHighestGradedClimb ? "bold" : "normal";
+            string rowBackgroundColour = climber.Climber.RouteCount >= 100 ? "#f0e68c" : "";
 
             if (climber.RankDelta != 0)
             {
@@ -71,7 +72,7 @@
               rankDelta = "-";
             }
 
-            <tr>
+            <tr style="background-color: @rowBackgroundColour;">
               <td style="text-align: center;">@rank</td>
               <td style="text-align: center; font-size: smaller; vertical-align: middle; color: @rankDeltaColour;">@rankDelta</td>
               <td style="text-align: left;"><a href="#@name.Replace(" ", "")">@name</a></td>

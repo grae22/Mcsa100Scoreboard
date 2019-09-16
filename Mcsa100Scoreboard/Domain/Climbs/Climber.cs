@@ -8,11 +8,15 @@ namespace Mcsa100Scoreboard.Domain.Climbs
   {
     public static Climber Create(
       in string name,
-      in IEnumerable<Route> routes)
+      in IEnumerable<Route> routes,
+      in int? overrideScoreboardPosition)
     {
       try
       {
-        return new Climber(name, routes);
+        return new Climber(
+          name,
+          routes,
+          overrideScoreboardPosition);
       }
       catch (ArgumentException)
       {
@@ -24,18 +28,21 @@ namespace Mcsa100Scoreboard.Domain.Climbs
     public IEnumerable<Route> Routes { get; }
     public IEnumerable<Route> GradedRoutes => _gradedRoutes;
     public int RouteCount => Routes.Count();
+    public int? OverrideScoreboardPosition { get; }
 
     private readonly List<Route> _gradedRoutes = new List<Route>();
 
     private Climber(
       in string name,
-      in IEnumerable<Route> routes)
+      in IEnumerable<Route> routes,
+      in int? overrideScoreboardPosition)
     {
       ValidateName(name);
       ValidateRoutes(routes);
 
       Name = name;
       Routes = new List<Route>(routes);
+      OverrideScoreboardPosition = overrideScoreboardPosition;
 
       _gradedRoutes.AddRange(routes.Where(r => r.HasGrade));
     }

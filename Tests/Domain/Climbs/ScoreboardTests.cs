@@ -17,9 +17,9 @@ namespace Tests.Domain.Climbs
       // Arrange.
       Climber[] climbers =
       {
-        Climber.Create("Climber1", new[] { Route.Create("C1R1") }),
-        Climber.Create("Climber2", new[] { Route.Create("C2R1"), Route.Create("C2R2") }),
-        Climber.Create("Climber3", new[] { Route.Create("C3R1"), Route.Create("C3R2"), Route.Create("C3R3") })
+        Climber.Create("Climber1", new[] { Route.Create("C1R1") }, null),
+        Climber.Create("Climber2", new[] { Route.Create("C2R1"), Route.Create("C2R2") }, null),
+        Climber.Create("Climber3", new[] { Route.Create("C3R1"), Route.Create("C3R2"), Route.Create("C3R3") }, null)
       };
 
       // Act.
@@ -36,13 +36,33 @@ namespace Tests.Domain.Climbs
     }
 
     [Test]
+    public void AnalysedClimbersInRankOrder_GivenClimberWithOverrideScoreboardPositionValue_ShouldRankClimbersByRouteCountDescending()
+    {
+      // Arrange.
+      Climber[] climbers =
+      {
+        Climber.Create("Climber1", new[] { Route.Create("C1R1") }, null),
+        Climber.Create("Climber2", new[] { Route.Create("C2R1"), Route.Create("C2R2") }, 1),
+        Climber.Create("Climber3", new[] { Route.Create("C3R1"), Route.Create("C3R2"), Route.Create("C3R3") }, null)
+      };
+
+      // Act.
+      var testObject = new Scoreboard(climbers, null);
+
+      // Assert.
+      IClimberAnalysis firstClimberAnalysis = testObject.AnalysedClimbersInRankOrder.First();
+
+      Assert.AreEqual("Climber2", firstClimberAnalysis.Climber.Name);
+    }
+
+    [Test]
     public void AnalysedClimbersInRankOrder_GivenPriorRankings_ShouldReturnCorrectDelta()
     {
       // Arrange.
       Climber[] climbers =
       {
-        Climber.Create("Climber1", new[] { Route.Create("C1R1") }),
-        Climber.Create("Climber2", new[] { Route.Create("C2R1"), Route.Create("C2R2") })
+        Climber.Create("Climber1", new[] { Route.Create("C1R1") }, null),
+        Climber.Create("Climber2", new[] { Route.Create("C2R1"), Route.Create("C2R2") }, null)
       };
 
       var priorAnalysisForClimber = Substitute.For<IClimberAnalysis>();
@@ -67,8 +87,8 @@ namespace Tests.Domain.Climbs
       // Arrange.
       Climber[] climbers =
       {
-        Climber.Create("Climber1", new[] { Route.Create("C1R1") }),
-        Climber.Create("Climber2", new[] { Route.Create("C2R1"), Route.Create("C2R2") })
+        Climber.Create("Climber1", new[] { Route.Create("C1R1") }, null),
+        Climber.Create("Climber2", new[] { Route.Create("C2R1"), Route.Create("C2R2") }, null)
       };
 
       var priorAnalyses = new ClimberAnalysis[0];

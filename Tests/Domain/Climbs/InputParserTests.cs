@@ -33,6 +33,9 @@ namespace Tests.Domain.Climbs
       Assert.True(climbers.Any(c => c.Name == "Marco"));
       Assert.AreEqual(24, climbers.First(c => c.Name == "Marco").RouteCount);
 
+      Assert.True(climbers.Any(c => c.Name == "Gavin"));
+      Assert.AreEqual(1, climbers.First(c => c.Name == "Gavin").OverrideScoreboardPosition);
+
       Assert.False(climbers.Any(c => c.Name == "Climb number"));
     }
   }
